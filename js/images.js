@@ -17,7 +17,7 @@
  */
 
 function appendImagesTo (element, location, prefix, fileExtension, start, end) {
-    var srcContents = location + prefix;
+    const srcContents = location + prefix;
     element = $(element)
     while (start <= end) {
         element.append('<div id="stillsImage" class="dn v-mid heightControl-stills min-h-21_875rem min-h-28_125rem-ns tc h-100">' + 
@@ -36,10 +36,10 @@ function appendImagesTo (element, location, prefix, fileExtension, start, end) {
  */
 
 function replacePlaceholders (element) {
-    var images = $(element).find("img[src='img/placeholder.jpg']");
+    const images = $(element).find("img[src='img/placeholder.jpg']");
     if (images.length !== 0) {
         images.each( function ()  {
-            var actualImage = $(this).attr("data-src");
+            const actualImage = $(this).attr("data-src");
             $(this).attr("src", actualImage);  
         });
     }
@@ -67,7 +67,7 @@ function Carousel ( _c ) {
 }
 
 Carousel.prototype.incIndex = function () {
-    var _index = this.index + 1;
+    const _index = this.index + 1;
     if (_index > this.total - 1 ) {
         this.setIndex(0);
     } else {
@@ -76,7 +76,7 @@ Carousel.prototype.incIndex = function () {
 }
 
 Carousel.prototype.decIndex = function () {
-    var _index = this.index - 1;
+    const _index = this.index - 1;
     if (_index < 0 ) {
         this.setIndex(this.total - 1);
     } else {
@@ -89,12 +89,12 @@ Carousel.prototype.setIndex = function (n) {
 }
 
 Carousel.prototype.loadCaption = function (img) {
-    var _img = img.children().attr("src");
-    var regExp = /img\/photos\/[a-z]*\/([a-z]*)(\d*)/g;
-    var match = regExp.exec(_img);
-    var name = match[1];
-    var num = match[2];
-    var caption = stillsData[name][num];
+    const _img = img.children().attr("src");
+    const regExp = /img\/photos\/[a-z]*\/([a-z]*)(\d*)/g;
+    const match = regExp.exec(_img);
+    const name = match[1];
+    const num = match[2];
+    const caption = stillsData[name][num];
 
     console.log(name + " " + num);
     console.log(stillsData[name][num]);
@@ -106,20 +106,20 @@ Carousel.prototype.loadCaption = function (img) {
 }
 
 Carousel.prototype.setIndicator = function () {
-    var adjIndex = this.index + 1;
+    const adjIndex = this.index + 1;
     $('#stills-indicator').text(adjIndex.toString() + "/" + this.total);
 }
 
 Carousel.prototype.loadImages = function () {
-    var _stillsPage = Page.findPage(this.id);
+    const _stillsPage = Page.findPage(this.id);
     if (!_stillsPage.hasAllData) {
-        var _images = this.images;
-        var len = _images.length;
+        const _images = this.images;
+        const len = _images.length;
         if (_images[0] !== undefined) {
-            for (var i = 0; i < len; i++) {
-                var _name = _images[i][0];
-                var _imgAmount = _images[i][1];
-                var _start = _name === "media" ? 4 : 1;
+            for (let i = 0; i < len; i++) {
+                const _name = _images[i][0];
+                const _imgAmount = _images[i][1];
+                const _start = _name === "media" ? 4 : 1;
                 appendImagesTo(this.id + " #imageContainer", "img/photos/" + _name + "/", _name, ".jpg", _start, _imgAmount);
             }
 
@@ -136,7 +136,7 @@ Carousel.prototype.emitSlide = function (dir) {
     $( this.id ).trigger( "carousel:slide", [this.index, this.indexLoadLeft, this.indexLoadRight, this.images, dir, this] );
 }
 
-var stillsCarousel = new Carousel({
+const stillsCarousel = new Carousel({
     "id": "#stills",
     "images": [["media", 44], ["faster", 28], ["slip", 6], ["live", 5]],
     "total": 44 + 5 + 28 + 6,
@@ -145,7 +145,7 @@ var stillsCarousel = new Carousel({
     "caption": $('#stillsCaption')
 });
 
-var stillsData = {
+const stillsData = {
     "media" : {
         "1": "Fires, fury, absolution.<br>Delusion, fantasy, insincerity.<br>Constants follow us.<br>News breaks us.",
         "2": "Culture, rocks, freedom.<br>Eat me, hide me.",
@@ -202,10 +202,10 @@ var stillsData = {
  */
 
 $('#stills-left').on('click', function() {
-    var img = $('#stillsImage.dtc');
-    var sC = stillsCarousel;
-    var _tmpIndex = sC.index;
-    var loadingImage;
+    const img = $('#stillsImage.dtc');
+    const sC = stillsCarousel;
+    const _tmpIndex = sC.index;
+    let loadingImage;
 
     sC.decIndex();
     sC.emitSlide('left');
@@ -225,10 +225,10 @@ $('#stills-left').on('click', function() {
 });
 
 $('#stills-right').on('click', function() {
-    var img = $('#stillsImage.dtc');
-    var sC = stillsCarousel;
-    var _tmpIndex = sC.index + 1;
-    var loadingImage;
+    const img = $('#stillsImage.dtc');
+    const sC = stillsCarousel;
+    const _tmpIndex = sC.index + 1;
+    let loadingImage;
 
     sC.incIndex();
     sC.emitSlide('right'); 
@@ -248,7 +248,7 @@ $('#stills-right').on('click', function() {
 });
 
 $("#stills").on("carousel:slide", function(event, _index, _indexLoadLeft, _indexLoadRight, _images, _dir, _this) {
-    var _stillsPage = Page.findPage('#stills')
+    const _stillsPage = Page.findPage('#stills')
     if (_stillsPage.hasAllData === true) {
         // disable the event handler
         $("#stills").off("carousel:slide");
@@ -355,22 +355,23 @@ $('.carousel').on('slid.bs.carousel', function () {
     if (pages[7].hasAllData === true) {
         // console.log('not loading any more images');
         return;
-    } else 
-    var index = $('.carousel .active').index('.carousel .item');
-    console.log('index = ' + index);
-    if (index + 1 === 9) {
-        // console.log('9th image loaded, loading new set');
-        appendImagesTo("#diaryCarouselInner", "img/photos/diary/", "diary", ".jpg", 11, 21);
-        return;
-    } else if (index + 1 === 20) {
-        // console.log('20th image loaded, loading new set');
-        appendImagesTo("#diaryCarouselInner", "img/photos/diary/", "diary", ".jpg", 22, 32);
-        return;
-    } else if (index + 1 === 30) {
-        // console.log('30th image loaded, loading rest of diary');
-        appendImagesTo("#diaryCarouselInner", "img/photos/diary/", "diary", ".jpg", 33, 63);
-        pages[7].hasAllData = true;
-        return;
+    } else {
+        const index = $('.carousel .active').index('.carousel .item');
+            console.log('index = ' + index);
+        if (index + 1 === 9) {
+            // console.log('9th image loaded, loading new set');
+            appendImagesTo("#diaryCarouselInner", "img/photos/diary/", "diary", ".jpg", 11, 21);
+            return;
+        } else if (index + 1 === 20) {
+            // console.log('20th image loaded, loading new set');
+            appendImagesTo("#diaryCarouselInner", "img/photos/diary/", "diary", ".jpg", 22, 32);
+            return;
+        } else if (index + 1 === 30) {
+            // console.log('30th image loaded, loading rest of diary');
+            appendImagesTo("#diaryCarouselInner", "img/photos/diary/", "diary", ".jpg", 33, 63);
+            pages[7].hasAllData = true;
+            return;
+        }
     }
 });
 

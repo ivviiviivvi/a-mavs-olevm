@@ -1,12 +1,12 @@
 "use strict"; 
 
 /**
- * @global {String} currentPage - string containing the element tag of the page you're on 
- * @global {String} adIsLoaded - tells us whether or not the ad has been loaded
+ * @global {Object} currentPage - current page object
+ * @global {Boolean} adIsLoaded - tells us whether or not the ad has been loaded
  */
 
-var currentPage = {};
-var adIsLoaded = false;
+let currentPage = {};
+const adIsLoaded = false;
 
 /** 
  * Page Object
@@ -69,7 +69,7 @@ Page.prototype.initPage = function () {
 
 Page.prototype.getBackElement = function ( _Page ) {
 	_Page = _Page || this;
-    var pageObj = Page.findPage(_Page.id);
+    const pageObj = Page.findPage(_Page.id);
 	
     if (pageObj.trace) {
 		return pageObj.trace;
@@ -91,7 +91,7 @@ Page.prototype.getBackElement = function ( _Page ) {
  */
 
 Page.findPage = function ( _pageid ) {
-    var index = pages.findIndex (function (current) { return _pageid === current.id; });
+    const index = pages.findIndex (function (current) { return _pageid === current.id; });
     if (index === -1) { throw "Can't find page"; }
     else { return pages[index]; }
 }
@@ -111,7 +111,7 @@ function showNewSection ( _loadingSection ) {
     if (!_loadingSection || currentPage.isLoading) {
         return false; // loadingSection isn't defined, or the page is loading
     } else {
-        var loadingSection = Page.findPage( _loadingSection );
+        const loadingSection = Page.findPage( _loadingSection );
 
         loadingSection.initPage();
 
@@ -130,7 +130,7 @@ function showNewSection ( _loadingSection ) {
  */
 
 function fadeInPage (_Page, _cb) {
-    var _display;
+    let _display;
 
     if (_Page.isLoading === false) {
         // make sure opacity is 0 & then the object is there
@@ -169,7 +169,7 @@ function fadeInPage (_Page, _cb) {
 
 function fadeOutPage ( _Page, _cb) {
     if ( _Page.isLoading === false ) {
-        var displayOfPage = $(_Page.id).css("display");
+        const displayOfPage = $(_Page.id).css("display");
         // make sure it's not fading out a hidden or non existant element
         if ( displayOfPage !== undefined && displayOfPage !== "none") {
             $(_Page.id).velocity("fadeOut", {
@@ -236,8 +236,8 @@ $("#VideoBackButton5").on("click", function() { showNewSection("#vision"); });
  */
 
 $(".c-hamburger").on("click", function() {
-    var hamburgerMenu = $(".c-hamburger");
-    var mobileMenu = $(".mobileMenu");
+    const hamburgerMenu = $(".c-hamburger");
+    const mobileMenu = $(".mobileMenu");
 
     if (hamburgerMenu.hasClass("is-active")) {
         hamburgerMenu.removeClass("is-active");

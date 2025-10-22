@@ -3,7 +3,7 @@
  * 
  */
 
-var _pID = {
+const _pID = {
     "landing": "#landing",
     "menu": "#menu",
     "sound": "#sound",
@@ -16,7 +16,7 @@ var _pID = {
     "info": "#info"
 }
 
-var pages = [];
+let pages = [];
 
 pages.menu = new Page ({
     "id": _pID.menu,
@@ -36,7 +36,7 @@ pages.sound = new Page ({
     "upLinks": [_pID.menu],
     "initialize": function () {
         // add the iFrames
-        var _iFrames = [
+        const _iFrames = [
             '<iframe style="border: 0; width: 300px; height: 300px;" src="http://bandcamp.com/EmbeddedPlayer/album=3780915385/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/"><a href="http://music.etceter4.com/album/ogod">OGOD by ET CETER4</a></iframe>',
             '<iframe style="border: 0; width: 300px; height: 300px;" src="http://bandcamp.com/EmbeddedPlayer/album=604244064/size=large/bgcol=ffffff/linkcol=333333/minimal=true/transparent=true/"><a href="http://music.etceter4.com/album/et-ceter4-rmxs">ET CETER4 RMXS by ET CETER4</a></iframe>',
             '<iframe style="border: 10px; width: 300px; height: 300px;" src="http://bandcamp.com/EmbeddedPlayer/album=489900059/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/"><a href="http://music.etceter4.com/album/the-progression-of-digression">ProgressionDigression by ET CETER4</a></iframe>',

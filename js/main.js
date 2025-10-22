@@ -11,10 +11,10 @@
  */
 
 $(document).ready(function () {
-    var hash = window.location.hash;
+    const hash = window.location.hash;
     // Goes to the section in the URL
     if (hash) {
-        var _hash = $(hash);
+        const _hash = $(hash);
 
         _hash.removeClass("dn");
         if (hash === "#stills" || hash === "#diary" ) { 
@@ -48,11 +48,11 @@ if (!Array.prototype.some) {
             throw new TypeError();
         }
 
-        var t = Object(this);
-        var len = t.length >>> 0;
+        const t = Object(this);
+        const len = t.length >>> 0;
 
-        var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
-        for (var i = 0; i < len; i++) {
+        const thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+        for (let i = 0; i < len; i++) {
             if (i in t && fun.call(thisArg, t[i], i, t)) {
                 return true;
             }
