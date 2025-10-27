@@ -1,15 +1,113 @@
-# ETCETER4: Museum & Mausoleum Transformation Plan
+# ETCETER4: The Five Pillars Transformation
 **A New Era for Your Art Website (Est. 2010)**
 
 ## Executive Summary
 
-This document outlines the comprehensive transformation of etceter4.com from its original 2010 incarnation into a dual-purpose platform: a **living museum** preserving the rich history of your multimedia art, and a **mausoleum** honoring past work while continuing to evolve.
+This document outlines the comprehensive transformation of etceter4.com from its original 2010 incarnation into a multi-dimensional platform built on **five classical pillars**:
+
+1. **MUSEUM** - Preserving artistic history and context
+2. **MAUSOLEUM** - Honoring completed work with reverence
+3. **LABYRINTH** - Maintaining non-linear exploration and discovery
+4. **CHORAL CHAMBER** - Celebrating sound, voice, and musical creation
+5. **ATELIER** - Fostering living art, active creation, and experimentation
 
 **Repository Status:** All branches reviewed and merged. Security audit completed October 2024. Zero vulnerabilities. Production-ready.
 
 ---
 
-## I. Current State Analysis
+## I. The Five Pillars: Classical Architecture for Digital Art
+
+### Pillar I: MUSEUM (μουσεῖον - Mouseion)
+**Function:** Preservation, Context, History
+
+The Museum preserves your artistic journey from 2010-2017:
+- Chronological organization of all work
+- Timeline visualization
+- Metadata and contextual information
+- Professional curatorial presentation
+- Archive navigation and discovery
+
+*"A museum is not a graveyard. It is a living conversation between past and present."*
+
+### Pillar II: MAUSOLEUM (μαυσωλεῖον - Mausoleion)
+**Function:** Honor, Memorial, Reverence
+
+The Mausoleum creates sacred spaces for completed work:
+- Hall of Albums - 4 complete releases
+- OGOD Monument - 29-page visual album
+- Diary Chamber - 12 labyrinth entries
+- Memorial spaces for finished chapters
+- Contemplative atmosphere
+
+*"A mausoleum honors what is complete. It holds space for contemplation, grief, pride, and memory."*
+
+### Pillar III: LABYRINTH (λαβύρινθος - Labyrinthos)
+**Function:** Exploration, Discovery, Journey
+
+The Labyrinth maintains your original vision:
+- Non-linear navigation
+- Hash-based routing (#words, #vision, #sound)
+- Interconnected content
+- Multiple pathways through work
+- Serendipitous discovery
+
+*"The labyrinth is not a maze. There are no wrong turns. Every path leads to the center."*
+
+### Pillar IV: CHORAL CHAMBER (χορός - Choros)
+**Function:** Sound, Voice, Performance
+
+The Choral Chamber celebrates your musical work:
+- 4 albums (OGOD, RMXS, ProgressionDigression, Etcetera)
+- OGOD visual album experience
+- Live performance documentation
+- Bandcamp integration
+- YouTube video gallery
+- Audio-visual synthesis
+
+*"The choral chamber amplifies voice - whether sung, spoken, or synthesized."*
+
+### Pillar V: ATELIER (from Latin astula - splinter, workshop)
+**Function:** Creation, Experimentation, Evolution
+
+The Atelier is your active workspace:
+- New diary/blog entries
+- Experimental features (word clouds, P5.js sketches)
+- Works-in-progress
+- Creative process documentation
+- Living, breathing evolution
+
+*"Art does not end when published. The artist continues to evolve, and so does the work's meaning."*
+
+---
+
+### The Five Pillars in Harmony
+
+```
+┌────────────┬──────────────┬─────────────┬────────────┬──────────┐
+│   MUSEUM   │  MAUSOLEUM   │  LABYRINTH  │   CHORAL   │ ATELIER  │
+│            │              │             │  CHAMBER   │          │
+├────────────┼──────────────┼─────────────┼────────────┼──────────┤
+│ Preserve   │    Honor     │   Explore   │   Voice    │  Create  │
+│ Context    │   Memorial   │  Discovery  │   Sound    │  Evolve  │
+│ Timeline   │   Complete   │   Journey   │  Perform   │  Experiment│
+│ Archive    │   Reverence  │  Non-linear │  Musical   │  Active  │
+│ History    │    Sacred    │   Freedom   │  Synthesis │  Living  │
+└────────────┴──────────────┴─────────────┴────────────┴──────────┘
+
+       PAST              COMPLETE        CONTINUOUS      SONIC         FUTURE
+     (2010-17)          (Finished)       (Original)    (Musical)      (Ongoing)
+```
+
+This architecture allows visitors to:
+1. **Learn** your history (Museum)
+2. **Honor** completed work (Mausoleum)
+3. **Explore** freely (Labyrinth)
+4. **Listen** to your music (Choral Chamber)
+5. **Witness** ongoing creation (Atelier)
+
+---
+
+## II. Current State Analysis
 
 ### Repository Overview
 - **Size:** 1.4GB (729+ images, 50+ HTML files)
