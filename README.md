@@ -1,39 +1,87 @@
-# ETCETER4
+# ETCETER4 - THE PANTHEON
 
-This is the website for etceter4.com - a composer of sounds/words/images. Explore the depths of our web labyrinth.
+**A Living Temple of Art, Sound, and Words**
 
-![CI/CD Status](https://github.com/4-b100m/etceter4/workflows/CI%2FCD%20Pipeline/badge.svg)
+This is the website for etceter4.com - a multi-dimensional artistic platform built on classical architectural principles. ET CETER4 is a composer of sounds/words/images, operating across four professional facets: **Academic**, **Professor**, **Designer**, and **Artist**.
+
+## 🏛️ The Pantheon: Five Pillars Architecture
+
+The site is structured as a complete **PANTHEON** - a sacred temple complex with five core pillars, each serving distinct artistic and intellectual functions:
+
+### 1. **MUSEUM** (μουσεῖον - Mouseion) - Preservation
+
+- Preserves artistic journey from 2010-present
+- Chronological organization of all work
+- Timeline visualization and archival navigation
+- Professional curatorial presentation
+
+### 2. **MAUSOLEUM** (μαυσωλεῖον - Mausoleion) - Honor
+
+- Sacred spaces for completed work
+- Hall of Albums (complete releases)
+- OGOD Monument (29-page visual album)
+- Diary Chamber (labyrinth entries)
+- Contemplative memorial spaces
+
+### 3. **LABYRINTH** (λαβύρινθος - Labyrinthos) - Exploration
+
+- Non-linear navigation and discovery
+- Hash-based routing (#words, #vision, #sound)
+- Interconnected content pathways
+- Original vision of exploratory web experience
+
+### 4. **CHORAL CHAMBER** (χορός - Choros) - Sound/Music
+
+- Musical compositions and albums
+- Sound installations and audio experiments
+- Voice and choral works
+- Living music archive
+
+### 5. **ATELIER** (astula - Workshop) - Creation
+
+- Active creation and experimentation
+- Work-in-progress showcase
+- Living art and ongoing projects
+- Dynamic, evolving content
+
+### The Living Pantheon
+
+Inspired by Radiohead's Kid A & Hail to the Thief era websites, the Pantheon is a **living, breathing organism** - constantly shifting, morphing, and evolving. The temple breathes with subtle animations, generative elements, and hidden discoveries, creating an experience that is never quite the same twice.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - **Node.js** 18+ and **npm** 9+
 - **Git** for version control
 
 ### Development Setup
 
 1. **Clone the repository**
+
    ```bash
-   git clone https://github.com/4-b100m/etceter4.git
-   cd etceter4
+   git clone https://github.com/ivi374forivi/a-mavs-olevm.git
+   cd a-mavs-olevm
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start development server**
+
    ```bash
    npm run dev
    ```
-   
+
    This will start a local server at `http://localhost:3000` with hot reloading enabled.
 
 ### Available Scripts
 
 - `npm run dev` - Start development server with live reload
-- `npm run lint` - Check code quality with ESLint  
+- `npm run lint` - Check code quality with ESLint
 - `npm run lint:fix` - Auto-fix linting issues
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check if code is properly formatted
@@ -50,35 +98,82 @@ This is the website for etceter4.com - a composer of sounds/words/images. Explor
 
 ## 📁 Project Structure
 
+The Pantheon is organized as a temple complex with distinct chambers:
+
 ```
-etceter4/
-├── css/                 # Stylesheets
-│   ├── styles.css      # Main styles
-│   └── vendor/         # Third-party CSS
-├── js/                 # JavaScript files
-│   ├── main.js         # Main application logic
-│   ├── page.js         # Page management
-│   └── ...            # Other modules
-├── img/                # Images and assets
-├── ogod/              # OGOD section files
-└── index.html         # Main entry point
+a-mavs-olevm/
+├── css/                    # Stylesheets
+│   ├── styles.css         # Main styles
+│   └── vendor/            # Third-party CSS (Tachyons)
+├── js/                    # JavaScript modules
+│   ├── main.js            # Core application logic
+│   ├── page.js            # Page management system
+│   ├── pageData.js        # Content data structure
+│   ├── images.js          # Image handling
+│   ├── diary.js           # Labyrinth diary entries
+│   ├── ogod.js            # OGOD visual album
+│   └── analytics.js       # Analytics integration
+├── img/                   # Visual assets and artwork
+├── audio/                 # Sound files and compositions
+├── video/                 # Video content
+├── labyrinth/             # Diary entries (HTML pages)
+├── ogod/                  # OGOD Monument files
+├── akademia/              # Academic/professional chamber
+├── fonts/                 # Custom typography
+├── docs/                  # Documentation
+└── index.html             # Temple entrance (main entry point)
 ```
+
+## 🌟 Core Concepts
+
+### The Expanded Pantheon
+
+Beyond the five core pillars, the Pantheon includes additional chambers:
+
+- **AKADEMIA** - Academic CV, teaching, research, professional work
+- **AGORA** - Political discourse and cultural commentary
+- **SYMPOSIUM** - Collaborative and social spaces
+- **ORACLE** - Divination, randomness, and AI integration
+- **GYMNASIUM** - Skills, exercises, experiments
+- **NECROPOLIS** - Archive of abandoned/dead projects
+
+### Professional Facets
+
+ET CETER4 operates across four interconnected professional identities:
+
+1. **ACADEMIC** - Researcher, scholar, theorist
+2. **PROFESSOR** - Teacher, mentor, curriculum designer
+3. **DESIGNER** - Visual designer, UX/UI, web design
+4. **ARTIST** - Composer, multimedia artist, experimental creator
 
 ## 🔧 Development Guidelines
 
 ### Code Style
+
 - Use modern JavaScript (ES6+) features
 - Prefer `const` and `let` over `var`
 - Follow the configured ESLint and Prettier rules
 - Use meaningful variable and function names
+- See [NAMING_SYSTEM.md](NAMING_SYSTEM.md) for comprehensive naming strategies
 
 ### CSS Architecture
+
 - Utility-first approach with Tachyons
-- Component-specific styles in `styles.css`  
+- Component-specific styles in `styles.css`
 - Responsive design for modern devices
 - No IE8 support (modern browsers only)
+- Custom properties for theming
+
+### Design Philosophy
+
+- **Living Architecture**: Subtle animations and generative elements
+- **Non-linear Navigation**: Multiple pathways through content
+- **Breathing Temple**: Constant subtle motion and evolution
+- **Hidden Discoveries**: Easter eggs and secret paths
+- **Atmospheric Sound**: Ambient audio integration
 
 ### Git Workflow
+
 - Create feature branches from `master`
 - Use descriptive commit messages
 - All PRs require passing CI checks
@@ -86,12 +181,14 @@ etceter4/
 
 ## 🚀 Deployment
 
-The site automatically deploys to GitHub Pages when changes are pushed to the `master` branch. The CI/CD pipeline:
+The site can be deployed to various hosting platforms. The CI/CD pipeline includes:
 
 1. **Linting & Formatting** - Ensures code quality
 2. **Package Lock Validation** - Verifies dependency integrity
-3. **Security Audit** - Checks for vulnerabilities  
-4. **Deploy** - Publishes to GitHub Pages
+3. **Security Audit** - Checks for vulnerabilities
+4. **Deploy** - Publishes to hosting platform (GitHub Pages, Vercel, etc.)
+
+See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for Vercel-specific deployment instructions.
 
 ## 🔒 Security
 
@@ -103,6 +200,39 @@ The site automatically deploys to GitHub Pages when changes are pushed to the `m
 - SRI (Subresource Integrity) hashes for all CDN resources
 
 See [SECURITY.md](SECURITY.md) for full security documentation.
+
+## 📚 Documentation
+
+Comprehensive documentation is available for all aspects of the Pantheon:
+
+### Architecture & Vision
+
+- [PANTHEON_ARCHITECTURE.md](PANTHEON_ARCHITECTURE.md) - Complete temple structure and expansion plans
+- [LIVING_PANTHEON_GENERATIVE.md](LIVING_PANTHEON_GENERATIVE.md) - Breathing, generative architecture concepts
+- [TRANSFORMATION_PLAN.md](TRANSFORMATION_PLAN.md) - The Five Pillars transformation journey
+- [PANTHEON_EXPANSION_SUMMARY.md](PANTHEON_EXPANSION_SUMMARY.md) - Summary of expanded chambers
+
+### Professional & Academic
+
+- [PROFESSIONAL_PANTHEON_CV.md](PROFESSIONAL_PANTHEON_CV.md) - Professional identity and CV architecture
+- [MACRO_REVIEW_SUMMARY.md](MACRO_REVIEW_SUMMARY.md) - Project overview and status
+
+### Technical Guides
+
+- [BEGINNER_TUTORIAL.md](BEGINNER_TUTORIAL.md) - Complete guide for new developers
+- [QUICK_START.md](QUICK_START.md) - Get running in 5 minutes
+- [SETUP_CHECKLIST.md](SETUP_CHECKLIST.md) - Installation verification
+- [LIVE_PREVIEW_GUIDE.md](LIVE_PREVIEW_GUIDE.md) - Local development server setup
+- [MEDIA_INFRASTRUCTURE_GUIDE.md](MEDIA_INFRASTRUCTURE_GUIDE.md) - Audio/video handling
+- [NAMING_SYSTEM.md](NAMING_SYSTEM.md) - Comprehensive naming conventions and tools
+- [EDGE_CASES.md](EDGE_CASES.md) - Known limitations and workarounds
+- [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) - Vercel deployment guide
+
+### Project Management
+
+- [ACTIVATION_COMPLETE.md](ACTIVATION_COMPLETE.md) - Implementation completion status
+- [AUDIT_SUMMARY.md](AUDIT_SUMMARY.md) - Security and quality audits
+- [SESSION_SUMMARY_2025-11-03.md](SESSION_SUMMARY_2025-11-03.md) - Development session notes
 
 ## 🤝 Contributing
 
@@ -126,61 +256,24 @@ Contact us if you see any strange things happening on the site!
 
 ---
 
-*Modernized and updated for current web standards* ✨
+## 🎨 The Living Temple
 
-## For Beginners
+_"The temple breathes"_
 
-**New to web development?** We've got you covered with comprehensive learning materials:
-- ✅ [Setup Checklist](SETUP_CHECKLIST.md) - Make sure everything is installed correctly
-- 📚 [Complete Beginner's Tutorial](BEGINNER_TUTORIAL.md) - Learn Terminal, Git, GitHub, VS Code, and more
-- 🚀 [Quick Start Guide](QUICK_START.md) - Get running in 5 minutes
-- 📊 [Visual Guides](docs/VISUAL_GUIDES.md) - Diagrams and visual references
+The Pantheon is not a static monument but a **living, breathing organism**. Inspired by the experimental web design of Radiohead's Kid A era (2000-2003), this digital temple features:
 
-## Getting Started
+- Constant subtle motion and animation
+- Generative, unpredictable elements
+- Hidden pathways and discoveries
+- Ambient soundscapes
+- Glitch aesthetics (controlled chaos)
+- Layers of depth and mystery
+- Non-obvious navigation patterns
 
-1. Download and install the [Node Version Manager (NVM)](https://github.com/creationix/nvm)  (you will need XCode for this if on Mac), and [git](https://www.atlassian.com/git/tutorials/install-git/mac-os-x)
-2. Through NVM, download the latest long term support version of node
+Enter the Pantheon. Explore. Discover. Get lost. Find yourself.
 
-    ```bash
-    nvm install --lts
-    ```
-    
-3.  Set the default state of your terminal to that version of node (so you don't have to reset it every time!)
+**Repository:** [ivi374forivi/a-mavs-olevm](https://github.com/ivi374forivi/a-mavs-olevm)
 
-    ```bash
-    # check the latest lts
-    nvm current
-    # use that version to make the default one
-    nvm alias default 6.9.2
-    ```
+---
 
-4. Move to the directory of the etceter4 folder using cd and ls
-
-    ```bash
-    # cd means 'change directory', move to directories using the syntax below
-    cd ~/Dropbox/etceter4 
-    # ls lists files in a directory, when you just type in ls, it lists the files in the current directory you're in
-    ls 
-    ```
-
-5. When you get to the folder, run npm install. This will install all the programs used in the project into the node_modules folder. These programs are used as aids in development and run tasks to build the page for production (more on this later).
-
-## Principles
-
-- Always use classes to describe the visual style of your html. Do not style using inline CSS, and IDs.
-- IDs are reserved to provide a hook to JS, and inline style is used for JS functions. 
-- Only use style.css to create more small components for use within the HTML doc, and to describe the visual behavior of pseudo classes.
-- Compartmentalize your JS. These will be concatenated and minified using a task runner.
-
-### Some helpful commands
-
-1. Remove a folder from git:
-
-    ```bash
-    # Removes it only from the git folder
-    git rm -r --cached FolderName
-    # Stages it
-    git commit -m "Removed folder from repository"
-    # Pushes changes live
-    git push origin master
-    ```
+_The Pantheon - A complete temple architecture for digital art_ ✨
