@@ -37,7 +37,7 @@ The site is structured as a complete **PANTHEON** - a sacred temple complex with
 - Voice and choral works
 - Living music archive
 
-### 5. **ATELIER** (astula - Workshop) - Creation
+### 5. **ATELIER** (Old French - Workshop) - Creation
 
 - Active creation and experimentation
 - Work-in-progress showcase
@@ -101,7 +101,7 @@ Inspired by Radiohead's Kid A & Hail to the Thief era websites, the Pantheon is 
 The Pantheon is organized as a temple complex with distinct chambers:
 
 ```
-a-mavs-olevm/
+etceter4/
 ├── css/                    # Stylesheets
 │   ├── styles.css         # Main styles
 │   └── vendor/            # Third-party CSS (Tachyons)
