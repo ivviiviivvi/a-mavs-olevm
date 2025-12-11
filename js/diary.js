@@ -112,9 +112,13 @@ Carousel.prototype.loadCaption = function (img) {
   const _img = img.children().attr('src');
   const regExp = /img\/photos\/[a-z]*\/([a-z]*)(\d*)/g;
   const match = regExp.exec(_img);
+  if (!match) {
+    this.caption.html('');
+    return;
+  }
   const name = match[1];
   const num = match[2];
-  const caption = stillsData[name][num];
+  const caption = stillsData[name] && stillsData[name][num];
 
   console.log(name + ' ' + num);
   console.log(stillsData[name][num]);
