@@ -54,7 +54,7 @@ if (!Array.prototype.some) {
   Array.prototype.some = function (fun /*, thisArg*/) {
     'use strict';
 
-    if (this == null) {
+    if (this === null || this === undefined) {
       throw new TypeError('Array.prototype.some called on null or undefined');
     }
 
