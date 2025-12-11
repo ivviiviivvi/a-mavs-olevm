@@ -115,13 +115,20 @@ Carousel.prototype.loadCaption = function (img) {
   if (!match) {
     this.caption.html('');
     return;
+  const match = regExp.exec(_img);
+
+  if (!match) {
+    this.caption.html('');
+    return;
   }
+
   const name = match[1];
   const num = match[2];
-  const caption = stillsData[name] && stillsData[name][num];
+  const caption = stillsData[name]?.[num];
 
   console.log(name + ' ' + num);
-  console.log(stillsData[name][num]);
+  console.log(caption);
+
   if (caption !== undefined) {
     this.caption.html(caption);
   } else {
