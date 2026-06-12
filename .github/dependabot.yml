@@ -1,0 +1,24 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directories:
+      - "/"
+      - "/absorb-alchemize/audio-orb"
+      - "/absorb-alchemize/gemini-ink-studio"
+      - "/absorb-alchemize/p5js-playground"
+      - "/absorb-alchemize/synthwave-space"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    groups:
+      npm-deps:
+        patterns: ["*"]
+  - package-ecosystem: "github-actions"
+    directories:
+      - "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    groups:
+      github-actions-deps:
+        patterns: ["*"]
