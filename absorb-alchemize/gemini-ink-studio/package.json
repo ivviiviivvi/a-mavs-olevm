@@ -9,15 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "lucide-react": "^0.556.0",
+    "lucide-react": "^1.21.0",
     "react-dom": "^19.2.1",
     "react": "^19.2.1",
-    "@google/genai": "^1.31.0"
+    "@google/genai": "^2.9.0"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "@types/node": "^26.0.0",
+    "@vitejs/plugin-react": "^6.0.2",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.16"
   }
 }
