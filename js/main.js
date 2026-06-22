@@ -56,7 +56,7 @@ function handleHashChange() {
     return;
   }
 
-  const hash = window.location.hash || '#landing';
+  const hash = window.location.hash || '#visual-home';
 
   // Don't navigate if we're already on this page
   if (currentPage && currentPage.id === hash) {
@@ -216,32 +216,35 @@ $(document).ready(() => {
         }
       });
     } catch (error) {
-      // Fallback to landing page if hash is invalid
-      console.warn(`Invalid hash on load: ${hash}, defaulting to landing`);
-      $('#landing').removeClass('dn');
-      currentPage = Page.findPage('#landing');
-      window.location.hash = '#landing';
-
-      // Initialize Living Pantheon with landing page
-      if (typeof initializeLivingPantheon === 'function') {
-        try {
-          initializeLivingPantheon('#landing');
-        } catch (pantheError) {
-          console.warn(
-            'Living Pantheon initialization error:',
-            pantheError.message
-          );
-        }
-      }
+      // Fallback to the visual home if the hash is invalid
+      console.warn(`Invalid hash on load: ${hash}, defaulting to visual home`);
+      bootDefaultHome();
     }
   } else {
+    bootDefaultHome();
+  }
+});
+
+/**
+ * Boots the default front door (#visual-home) when there is no hash, or as a
+ * fallback for an invalid hash. Runs initPage() so the works gallery renders.
+ */
+function bootDefaultHome() {
+  const home = '#visual-home';
+  try {
+    currentPage = Page.findPage(home);
+  } catch (findError) {
+    // Last-resort fallback if the home page is somehow unregistered
+    console.warn('Visual home not found, defaulting to landing:', findError);
     $('#landing').removeClass('dn');
     currentPage = Page.findPage('#landing');
-
-    // Initialize Living Pantheon with landing page (default)
+    return;
+  }
+  currentPage.initPage().then(() => {
+    $(home).removeClass('dn');
     if (typeof initializeLivingPantheon === 'function') {
       try {
-        initializeLivingPantheon('#landing');
+        initializeLivingPantheon(home);
       } catch (pantheError) {
         console.warn(
           'Living Pantheon initialization error:',
@@ -249,5 +252,5 @@ $(document).ready(() => {
         );
       }
     }
-  }
-});
+  });
+}
