@@ -195,6 +195,42 @@ describe('WorksGallery', () => {
     expect(document.body.classList.contains('lightbox-open')).toBe(false);
   });
 
+  it('loads the small thumbnail in the grid, with intrinsic dimensions', async () => {
+    const withThumb = {
+      ...MANIFEST,
+      works: [
+        {
+          id: 'a',
+          src: 'img/photos/a.jpg',
+          thumb: 'img/thumbs/a.webp',
+          w: 4000,
+          h: 3000,
+          type: 'photo',
+          category: 'Photography',
+          title: 'A',
+          caption: '',
+          tags: [],
+        },
+      ],
+    };
+    mockFetch(withThumb);
+    const wg = loadGallery();
+    await wg.init({ root: '#visual-home' });
+    const img = document.querySelector('#works-grid .gallery-item img');
+    // The grid must use the small WebP thumbnail, never the full original.
+    expect(img.getAttribute('data-src')).toBe('img/thumbs/a.webp');
+    expect(img.getAttribute('width')).toBe('4000');
+    expect(img.getAttribute('height')).toBe('3000');
+  });
+
+  it('falls back to the original when a work has no thumbnail', async () => {
+    mockFetch(MANIFEST); // MANIFEST works carry no `thumb`
+    const wg = loadGallery();
+    await wg.init({ root: '#visual-home' });
+    const img = document.querySelector('#works-grid .gallery-item img');
+    expect(img.getAttribute('data-src')).toBe('img/a.jpg');
+  });
+
   it('degrades gracefully when the manifest fails to load', async () => {
     mockFetch({}, false);
     const wg = loadGallery();

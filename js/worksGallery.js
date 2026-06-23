@@ -227,9 +227,15 @@
 
     const container = h('div', 'gallery-image-container loading');
     const img = h('img', null, {
-      'data-src': work.poster || work.src,
+      // The grid loads the small WebP thumbnail (scripts/backfill-thumbs.mjs);
+      // the lightbox loads the full-resolution original. Fall back to the
+      // poster/original if a work has no generated thumbnail yet.
+      'data-src': work.thumb || work.poster || work.src,
       alt: work.title || work.caption || 'Untitled work',
       decoding: 'async',
+      loading: 'lazy',
+      width: work.w || null,
+      height: work.h || null,
     });
     container.appendChild(img);
     item.appendChild(container);
