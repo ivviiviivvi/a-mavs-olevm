@@ -32,9 +32,30 @@ that, not sprawl.
    without a new property.
    - Pros: tiny; uses an existing under-filled chamber. Cons: more "narrative" than "destination."
 
-## My read (a recommendation, not a decision)
+## His decision (2026-06-23)
 
-Option **1 (Bridge Chamber)** or **3 (lineage spine in Khronos)** best honor "fortify what exists"
-and keep C3 subordinate to the academia spine. Option 2 is the boldest but adds a third surface.
-**I'm not building any of these until you choose** — and your choice (and your words for what the
-synthesis *says*) is the part only you can author.
+> *"ideal forms expansive evolution — they should all exist separately and together simultaneously."*
+
+So C3 is **not a choice among the three — it's all three, each as its own ideal form, AND unified.**
+The three are facets of one body:
+
+- **Origin (2011→2016)** — the first face, recovered and runnable (see C1).
+- **Temple (now)** — the nine-chamber art site, fortified not replaced (see C2).
+- **Present-day academic-artist** — AMP LAB MEDIA / objectlessons.film as the living bridge.
+
+**"Separately"** = each keeps its own front door and integrity (origin runs on its own; the temple's
+`#landing` stays default; the present-day face is its own property). **"Together"** = a connective
+layer binds them as one lineage — most naturally anchored in **Khronos** (the temple's history
+chamber) as the throughline, with cross-links so any face can reach the others.
+
+### Build shape (expansive but bounded — staged, gated)
+1. **Connective layer first** — Khronos lineage: origin → temple → present, as one timeline with
+   live cross-links to each surface. Smallest, makes the "together" real immediately.
+2. **Bridge Chamber** — a dedicated artist↔academic room (AMP LAB / object-lessons) inside the temple.
+3. **Present-day property** — the standalone academic-artist face that links origin + temple as its
+   lineage.
+
+Each lands as its own staged increment on `etceter4-revival`, in that order, so the unity exists
+early and the separate surfaces grow without blocking each other. **The *words* of the synthesis —
+what it says about who you are now — are yours to author; I scaffold the structure and draft where
+I can.** This stays subordinate to the education/academia spine and will not sprawl.

@@ -14,9 +14,14 @@ the order to fill them. **Nothing here replaces or buries the original front doo
 
 - **Stills captions: 6 of 83.** `js/images.js` `stillsData` has only 6 non-empty captions
   (media 3, faster 1, slip 1, live 1) across 83 images. ~93% blank.
-- **A live bug:** `js/config.js:51` declares `media: 44` but only **24** media files exist on disk.
-  The stills carousel requests `media-25 … media-44` → 20 broken-image / placeholder fallbacks.
-  (Real counts: media 24 · faster 28 · slip 6 · live 5 = **83**.) Fixing the count is a one-line truth-up.
+- **A live bug (corrected after reading the files):** the broken images are NOT a simple count
+  error. `js/config.js:51` `media: 44` is the **highest index, not a count** — the media archive is
+  **sparse**: real files are `1,3,4,7,8,12-23,32,33,40-44` (24 files). `Carousel.loadImages` builds
+  contiguous paths `media4…media44.jpg`, so every gap (media5,6,9,10,11,24-31,34-39) 404s. Diary is
+  worse: index-loaded `diary1..125` but files use `a`-suffixes (`diary10`, `diary10a`) the index loader
+  never requests. So the fix is "load only files that exist," not "change 44 to 24" (which would drop
+  real files media32-44). Captions are mis-indexed too (`stillsData.media[2]` has a caption but
+  `media2.jpg` doesn't exist). Real counts: media 24 · faster 28 · slip 6 · live 5 = **83**.
 - **~320 archival photos carry zero metadata:** `diary` 123 · `random` 99 · `artwork` 59
   · `glitchpr0n` 41 — none captioned, dated, or wired into a chamber.
 - **No `img/thumbs/`.** PR #100 generated 227 WebP thumbnails but they live **only** on
@@ -50,12 +55,20 @@ renderers into the `fragment.html` mount points. Fortifying = writing those data
 Every step is additive enrichment of an **existing** chamber. None touches the `#landing` default.
 Each is its own small commit on `etceter4-revival`, shown to you before any merge/deploy.
 
-1. **Truth-up the stills count + indicator** (one-line bug fix). `media: 44 → 24` in `js/config.js`;
-   fix the diary `1/83` indicator to the real total. Kills 20 broken images immediately. *(reversible, safe)*
-2. **Caption the 83 stills** — author real captions into `stillsData` (your voice; the 6 that exist
-   set the tone: *"Fires, fury, absolution…"*). This is the single highest-visibility fill.
-3. **Salvage the 227 thumbnails** from `feat/visual-home` into the real chambers (Stills/Pinakotheke
-   performance), **without** importing PR #100's grid front-door. Cherry-pick `img/thumbs/` only.
+1. **Kill the broken gallery images** — DONE on this branch. Two parts: (a) an `onerror` net in
+   `Carousel.js#appendImagesTo` hides any frame whose file 404s (robust against ALL archive gaps,
+   near-zero regression risk); (b) `scripts/gen-image-manifest.mjs` derives the real file inventory
+   from disk into `js/imageManifest.js` (media 24 / faster 28 / slip 6 / live 5 / diary 123) so a
+   follow-up can load *only* real files and produce correct totals. *(staged, gated)*
+   - **Gated follow-up (needs your review — touches live nav/caption semantics):** wire the carousel
+     to consume `IMAGE_MANIFEST` instead of a contiguous range, re-key `stillsData` captions to real
+     filenames, and fix the `1/83` diary indicator. Held back because it changes navigation behaviour
+     on the live site.
+2. **Salvage the 227 thumbnails** — DONE on this branch (`img/thumbs/` checked out from
+   `feat/visual-home`, **asset-only — no grid front-door**). Wiring them into Stills/Pinakotheke is
+   content work (step 3 below). *(staged, gated)*
+3. **Caption the 83 stills** — author real captions into `stillsData` (your voice; the 6 that exist
+   set the tone: *"Fires, fury, absolution…"*). Highest-visibility fill — **your words, gated.**
 4. **Surface real photography in Pinakotheke** — wire a curated slice of `artwork/` (59) and the
    strongest `diary`/`glitchpr0n` work into the gallery alongside the generative sketches.
 5. **Akademia** — drop in 2–4 real essays/papers (your academic voice; the explicit artist↔academia

@@ -38,7 +38,9 @@ function appendImagesTo(element, location, prefix, fileExtension, start, end) {
       fileExtension +
       '" alt="Gallery image ' +
       start +
-      '"/>' +
+      // Sparse archives (e.g. media has gaps: 1,3,4,7,8,12-23,32,33,40-44) mean some
+      // index-built paths 404. Hide a missing frame instead of showing a broken-image icon.
+      '" onerror="this.style.display=\'none\'"/>' +
       '</div>';
     start++;
   }

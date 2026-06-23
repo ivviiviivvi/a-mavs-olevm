@@ -29,16 +29,27 @@ So "the 2011 origin" as a *running site* = this rebuild, and it runs fine. But *
 2011 source** (the actual first-website code) lives in this repo's **git history**, not at HEAD.
 The clone is **shallow (depth 1, 1 commit)** — that history is not present locally yet.
 
-**To reach the literal 2011 origin (reversible, his call):**
-```bash
-git -C /Users/4jp/Workspace/organvm/etceter4-2011 fetch --unshallow
-git -C … log --reverse --oneline | head        # earliest commits = the true origin
-git -C … log --diff-filter=A --reverse -- 'index.html'   # when the front door was born
+**Excavated (you chose "both — run the rebuild AND dig out the original"):**
+`git fetch --unshallow` is done. The full history is **89 commits**. The earliest:
 ```
-Then we can check out / tag the earliest runnable commit as the canonical **origin** and run *that*.
-Flagged rather than done because un-shallowing pulls the full history of a 2 GB repo — cheap but
-worth a yes from you on which "origin" you mean: **the site as it runs today**, or **the literal
-first-commit 2011 code**.
+d3b4dbe  Initial commit
+35737fe  init commit                    ← first real code; first index.html, 2016-11-28
+d627364  set up npm test … gitignore
+55e70fd  restructured the vendor js folder
+…
+```
+**Finding:** the literal "2011" predates version control — this git repo was **initialized in
+November 2016**. So the *earliest recoverable origin in history* is `35737fe` (2016-11-28), the
+first `index.html`. The genuine 2011 first-website (if it survives at all) lives outside this
+repo — older backups/archives, not git. Worth a separate excavation if you want the true 2011 bits.
+
+**Available next (reversible, gated):** check out `35737fe` into a sibling and run it to see the
+earliest preserved face of the site:
+```bash
+git -C /Users/4jp/Workspace/organvm/etceter4-2011 worktree add ../etceter4-origin-2016 35737fe
+cd ../etceter4-origin-2016 && python3 -m http.server 8792
+```
+Not done unprompted (it's an extra worktree on disk); say the word and I'll stand it up.
 
 ## Tech stack (HEAD)
 
