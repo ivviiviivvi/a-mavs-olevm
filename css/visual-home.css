@@ -80,7 +80,8 @@
 .works-hero-link.works-ig:hover,
 .works-hero-link.works-ig:focus {
   background-color: #ff00ff;
-  color: #ffffff;
+  /* Dark text on magenta for AA contrast (matches the active filter button). */
+  color: #0b0b0c;
 }
 
 /* --- Filter bar overrides (dark, centered) --- */
@@ -105,7 +106,8 @@
 
 #visual-home .gallery-filter-btn.active {
   background-color: #ff00ff;
-  color: #ffffff;
+  /* Dark text on magenta: 6.1:1 contrast (WCAG AA). White was 3.13:1. */
+  color: #0b0b0c;
   border-color: #ff00ff;
 }
 
