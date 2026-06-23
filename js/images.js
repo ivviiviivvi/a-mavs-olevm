@@ -64,21 +64,34 @@ const stillsData = {
 };
 
 /**
+ * Real on-disk identifiers per collection, derived by scripts/gen-image-manifest.mjs
+ * into js/imageManifest.js. Falls back to a 1..N range (legacy behaviour) if the
+ * manifest script hasn't loaded — keeps images.js safe in chambers that don't ship it.
+ * The stills fragment preloads the first 3 media frames (media1, media3, media4), so
+ * those are skipped when appending the rest (entry[2] = preload count).
+ */
+const _MANIFEST = typeof IMAGE_MANIFEST !== 'undefined' ? IMAGE_MANIFEST : null;
+const _stillIds = (name, count) =>
+  _MANIFEST && _MANIFEST[name]
+    ? _MANIFEST[name]
+    : Array.from({ length: count }, (_, i) => String(i + 1));
+
+const _stillsImages = [
+  ['media', _stillIds('media', ETCETER4_CONFIG.images.media), 3],
+  ['faster', _stillIds('faster', ETCETER4_CONFIG.images.faster), 0],
+  ['slip', _stillIds('slip', ETCETER4_CONFIG.images.slip), 0],
+  ['live', _stillIds('live', ETCETER4_CONFIG.images.live), 0],
+];
+
+/**
  * Stills carousel instance
  */
 const stillsCarousel = new Carousel({
   id: '#stills',
-  images: [
-    ['media', ETCETER4_CONFIG.images.media],
-    ['faster', ETCETER4_CONFIG.images.faster],
-    ['slip', ETCETER4_CONFIG.images.slip],
-    ['live', ETCETER4_CONFIG.images.live],
-  ],
-  total:
-    ETCETER4_CONFIG.images.media +
-    ETCETER4_CONFIG.images.faster +
-    ETCETER4_CONFIG.images.slip +
-    ETCETER4_CONFIG.images.live,
+  images: _stillsImages,
+  // Total = count of images that actually exist (manifest-driven), so the
+  // indicator (N/total) and navigation wrap are correct rather than over-counting.
+  total: _stillsImages.reduce((sum, entry) => sum + entry[1].length, 0),
   indexLoadLeft: $('.stillsImage').length,
   loadOffset: ETCETER4_CONFIG.carousel.loadOffset,
   caption: $('#stillsCaption'),

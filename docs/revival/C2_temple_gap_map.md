@@ -55,15 +55,23 @@ renderers into the `fragment.html` mount points. Fortifying = writing those data
 Every step is additive enrichment of an **existing** chamber. None touches the `#landing` default.
 Each is its own small commit on `etceter4-revival`, shown to you before any merge/deploy.
 
-1. **Kill the broken gallery images** — DONE on this branch. Two parts: (a) an `onerror` net in
-   `Carousel.js#appendImagesTo` hides any frame whose file 404s (robust against ALL archive gaps,
-   near-zero regression risk); (b) `scripts/gen-image-manifest.mjs` derives the real file inventory
-   from disk into `js/imageManifest.js` (media 24 / faster 28 / slip 6 / live 5 / diary 123) so a
-   follow-up can load *only* real files and produce correct totals. *(staged, gated)*
-   - **Gated follow-up (needs your review — touches live nav/caption semantics):** wire the carousel
-     to consume `IMAGE_MANIFEST` instead of a contiguous range, re-key `stillsData` captions to real
-     filenames, and fix the `1/83` diary indicator. Held back because it changes navigation behaviour
-     on the live site.
+1. **Kill the broken gallery images + wire the stills gallery to real files** — DONE on this branch.
+   - `scripts/gen-image-manifest.mjs` → `js/imageManifest.js` derives the real inventory from disk
+     (media 24 / faster 28 / slip 6 / live 5 / diary 123). Re-run after adding photos.
+   - The **stills** carousel now loads from the manifest, not a contiguous 1..N range: `images.js`
+     builds explicit id lists, `Carousel.appendImagesTo` takes those ids, and `total` is the real
+     count. Fixed the fragment's broken `media2` preload → `media1, media3, media4` (all real).
+     **Verified by simulation against disk:** all 63 real stills load exactly once, zero broken
+     refs, indicator denominator = 63 (was an over-counted 83). Captions key on filename id, so the
+     5 real captions (media1, media3, faster1, slip1, live1) now attach to their frames.
+   - An `onerror` net stays as belt-and-suspenders, and still covers the **diary** gallery, whose
+     bespoke split-view loader I did **not** rewire (its captions are ~all empty; deeper diary
+     manifest-wiring + the `1/83` indicator remain a gated follow-up — lower value, higher risk).
+   - ⚠️ **One orphaned caption for you:** `stillsData.media["2"]` = *"Culture, rocks, freedom. / Eat
+     me, hide me."* was written for `media2.jpg`, which doesn't exist. I left your words in place
+     (never auto-deleted) but they show on no image — **tell me which photo they belong to** and I'll
+     re-key them.
+   - Not run: `vitest`/`eslint` (node_modules not installed); `node --check` passes on all files.
 2. **Salvage the 227 thumbnails** — DONE on this branch (`img/thumbs/` checked out from
    `feat/visual-home`, **asset-only — no grid front-door**). Wiring them into Stills/Pinakotheke is
    content work (step 3 below). *(staged, gated)*

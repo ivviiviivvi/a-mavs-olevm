@@ -15,34 +15,34 @@
  *
  * @param {string} element - CSS selector for the container element
  * @param {string} location - Base path to the image directory
- * @param {string} prefix - Filename prefix before the number (e.g., "photo_")
+ * @param {string} prefix - Filename prefix before the identifier (e.g., "media")
  * @param {string} fileExtension - File extension including the period (e.g., ".jpg", ".png")
- * @param {number} start - Starting number (inclusive)
- * @param {number} end - Ending number (inclusive)
+ * @param {Array<string|number>} ids - Explicit identifiers that exist on disk
+ *   (e.g. ['1','3','4','7'] for a sparse archive, or ['1','1a','2'] for suffixed files).
  *
  * @example
- * appendImagesTo('#stills', 'img/gallery/', 'photo_', '.jpg', 1, 20);
+ * appendImagesTo('#stills', 'img/photos/media/', 'media', '.jpg', ['1', '3', '4']);
  */
-function appendImagesTo(element, location, prefix, fileExtension, start, end) {
+function appendImagesTo(element, location, prefix, fileExtension, ids) {
   const srcContents = location + prefix;
   const $element = $(element);
   // Performance optimization: Build string first to minimize DOM reflows
   // Instead of appending in each iteration, batch into single append
   let content = '';
-  while (start <= end) {
+  for (let i = 0; i < ids.length; i++) {
+    const id = ids[i];
     content +=
       '<div class="stillsImage dn v-mid heightControl-stills min-h-21_875rem min-h-28_125rem-ns tc h-100">' +
       '<img class="mw-100 mh-100 w-auto h-auto anim anim-easeout" src="' +
       srcContents +
-      start +
+      id +
       fileExtension +
       '" alt="Gallery image ' +
-      start +
-      // Sparse archives (e.g. media has gaps: 1,3,4,7,8,12-23,32,33,40-44) mean some
-      // index-built paths 404. Hide a missing frame instead of showing a broken-image icon.
+      id +
+      // Belt-and-suspenders: if a file is ever missing, hide the frame rather than
+      // show a broken-image icon. The id list above should already be real files only.
       '" onerror="this.style.display=\'none\'"/>' +
       '</div>';
-    start++;
   }
   $element.append(content);
 }
@@ -201,15 +201,20 @@ class Carousel {
 
       for (let i = 0; i < images.length; i++) {
         const name = images[i][0];
-        const imgAmount = images[i][1];
-        const start = name === 'media' ? 4 : 1;
+        // entry[1] is either an explicit id list (manifest-driven) or a legacy
+        // numeric count. entry[2] is how many leading ids are already preloaded in
+        // the fragment HTML and must be skipped to avoid duplicate frames.
+        let ids = images[i][1];
+        const preload = images[i][2] || 0;
+        if (typeof ids === 'number') {
+          ids = Array.from({ length: ids }, (_, n) => String(n + 1));
+        }
         appendImagesTo(
           this.id + ' #imageContainer',
           'img/photos/' + name + '/',
           name,
           '.jpg',
-          start,
-          imgAmount
+          ids.slice(preload)
         );
       }
 

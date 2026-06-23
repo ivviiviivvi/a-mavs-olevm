@@ -19,6 +19,9 @@
 
   // Shared scripts used by multiple chambers (ScriptLoader deduplicates)
   const CAROUSEL = 'js/modules/Carousel.js';
+  // Real on-disk image inventory (gen-image-manifest.mjs) — must load before IMAGES,
+  // which reads IMAGE_MANIFEST to build the stills gallery from files that exist.
+  const MANIFEST = 'js/imageManifest.js';
   const IMAGES = 'js/images.js';
   const DIARY = 'js/diary.js';
 
@@ -172,13 +175,13 @@
   // ── Gallery Pages ──────────────────────────────────────────
   loader.register('stills', {
     html: 'chambers/stills/fragment.html',
-    scripts: [CAROUSEL, IMAGES],
+    scripts: [CAROUSEL, MANIFEST, IMAGES],
     styles: [],
   });
 
   loader.register('diary', {
     html: 'chambers/diary/fragment.html',
-    scripts: [CAROUSEL, IMAGES, DIARY],
+    scripts: [CAROUSEL, MANIFEST, IMAGES, DIARY],
     styles: [],
   });
 
