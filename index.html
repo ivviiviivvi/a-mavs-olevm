@@ -14,8 +14,8 @@
     />
     <meta name="author" content="ET CETER4" />
 
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://etceter4.com/" />
+    <!-- Canonical URL — live on GitHub Pages (custom domain etceter4.com no longer owned) -->
+    <link rel="canonical" href="https://organvm.github.io/a-mavs-olevm/" />
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="ET CETER4" />
@@ -23,8 +23,8 @@
       property="og:description"
       content="Composer of sounds/words/images || explore the depths of our web labyrinth"
     />
-    <meta property="og:image" content="https://etceter4.com/img/og-image.jpg" />
-    <meta property="og:url" content="https://etceter4.com/" />
+    <meta property="og:image" content="https://organvm.github.io/a-mavs-olevm/img/og-image.jpg" />
+    <meta property="og:url" content="https://organvm.github.io/a-mavs-olevm/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="ET CETER4" />
 
@@ -35,7 +35,7 @@
       name="twitter:description"
       content="Composer of sounds/words/images || explore the depths of our web labyrinth"
     />
-    <meta name="twitter:image" content="https://etceter4.com/img/og-image.jpg" />
+    <meta name="twitter:image" content="https://organvm.github.io/a-mavs-olevm/img/og-image.jpg" />
 
     <!-- Fonts(?) -->
 
@@ -50,6 +50,7 @@
     <link rel="stylesheet" href="css/living-animations.css" />
     <link rel="stylesheet" href="css/chamber-colors.css" />
     <link rel="stylesheet" href="css/gallery.css" />
+    <link rel="stylesheet" href="css/visual-home.css" />
     <link rel="stylesheet" href="css/timeline.css" />
 
     <!-- Video.js CSS -->
@@ -86,6 +87,29 @@
 
     <!-- All Pages-->
     <main id="pages" class="min-vh-100" aria-label="Main content">
+      <!-- Visual Home: image-first front door (default entry; the labyrinth below is preserved) -->
+      <section id="visual-home" class="dn min-vh-100 w-100" aria-label="Visual work — photography, video, multimedia">
+        <header id="works-hero" class="works-hero">
+          <h1 class="works-wordmark" data-profile="name">ETCETER4</h1>
+          <p class="works-statement" data-profile="statement">Photography · Video · Multimedia · Studies</p>
+          <nav class="works-hero-nav" aria-label="Visual home navigation">
+            <a
+              id="works-ig-link"
+              data-profile="instagram"
+              class="works-hero-link works-ig"
+              href="https://www.instagram.com/etceter4/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Instagram</a
+            >
+            <a class="works-hero-link" href="#akademia">Studies</a>
+            <a class="works-hero-link" href="#landing">Enter the labyrinth &rarr;</a>
+          </nav>
+        </header>
+        <div id="works-filters" class="gallery-filters" role="group" aria-label="Filter works by category"></div>
+        <div id="works-grid" class="gallery-grid" aria-live="polite"></div>
+      </section>
+
       <!-- Landing Page  -->
       <section id="landing" class="dn vh-100 w-100 pb-6rem">
         <!-- <h1 class="dn"> Landing Page </h1>  Used for HTML5 Outline  -->
@@ -566,8 +590,8 @@
                     deployment velocity.
                   </p>
                   <p class="mt0 mb0 f5 lh-copy measure-wide">
-                    Immediate rule: classify each launch as static, preview, or stateful before it claims another
-                    shared free-tier slot.
+                    Immediate rule: classify each launch as static, preview, or stateful before it claims another shared
+                    free-tier slot.
                   </p>
                 </div>
 
@@ -595,11 +619,7 @@
                     >
                   </div>
                   <div>
-                    <a
-                      href="http://www.et4l.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="f5 link black-link"
+                    <a href="http://www.et4l.com/" target="_blank" rel="noopener noreferrer" class="f5 link black-link"
                       >F4THR// [ E T 4 L ]</a
                     >
                   </div>
@@ -623,7 +643,9 @@
                     <p class="mt0 mb2 f7 fw6 tracked">STRIPE RESPONSE</p>
                     <ul class="pl3 mt0 mb0 lh-copy">
                       <li>Keep revenue recovery on a separate track from hosting migration work.</li>
-                      <li>Route public support traffic through Bandcamp and direct contact until Stripe is verified.</li>
+                      <li>
+                        Route public support traffic through Bandcamp and direct contact until Stripe is verified.
+                      </li>
                       <li>Only restore Stripe after the full checkout path is tested end to end.</li>
                     </ul>
                   </div>
@@ -705,7 +727,7 @@
         <!-- Main Container -->
         <section class="bg-white fl-ns ad-img-container w-50-ns">
           <!-- Image -->
-          <img src="img/photos/artwork/passing thru/pt5.png" alt="" class="ad-img ad-img-ns w-100" />
+          <img src="img/photos/artwork/passing thru/pt5.png" alt="" loading="lazy" class="ad-img ad-img-ns w-100" />
         </section>
 
         <section class="bg-white pt2 pt0-ns fl-ns w-50-ns">
@@ -799,6 +821,15 @@
           <p class="ma0 di">//</p>
           <a class="link white-link" href="#discovery">DISCOVERY</a>
           <p class="ma0 di">//</p>
+          <a
+            class="link white-link"
+            href="https://www.instagram.com/etceter4/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow on Instagram"
+            >INSTAGRAM</a
+          >
+          <p class="ma0 di">//</p>
           <a class="link white-link" href="http://eepurl.com/bPQueX" target="_blank" rel="noopener noreferrer"
             >MAILING LIST</a
           >
@@ -843,6 +874,7 @@
     <!-- Navigation and entry point -->
     <script src="js/page.js" defer></script>
     <script src="js/pageData.js" defer></script>
+    <script src="js/worksGallery.js" defer></script>
     <script src="js/main.js" defer></script>
     <!-- 3D Landing Compositor -->
     <script src="js/3d/core/SceneManager.js" defer></script>

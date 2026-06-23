@@ -9,6 +9,7 @@ export default [
       'js/page.js',
       'js/pageData.js',
       'js/images.js',
+      'js/worksGallery.js',
       'js/diary.js',
       'js/ogod.js',
       'js/analytics.js',
