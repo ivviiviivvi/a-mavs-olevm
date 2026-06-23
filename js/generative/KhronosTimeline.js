@@ -27,29 +27,28 @@ class KhronosTimeline {
     /** @type {string|null} Active milestone id */
     this.activeDetail = null;
 
+    // The real lineage — origin → temple → present (the "together" throughline).
+    // Anchored only on sourceable dates: 2011 (the original site, predates git),
+    // 2016-11 (first commit 35737fe), 2025-11 (the Pantheon rebuild — cf.
+    // SESSION_SUMMARY_2025-11-03 in the origin repo), 2026 (the present face).
+    // The temple's real feature-milestones (OGOD 3D, Discovery, Activation) are kept
+    // but re-grouped under the 'temple' era rather than asserting invented launch dates.
     this.milestones = [
       {
-        id: 'inception',
-        date: '2016-11',
-        label: 'First Commit',
-        description: 'Project inception — the first lines of ETCETER4 emerge.',
+        id: 'origin',
+        date: '2011-01',
+        label: 'etceter4.com',
+        description:
+          "The first face — the original artist website. Predates version control; the seed everything here grows from.",
         era: 'origin',
       },
       {
-        id: 'launch',
-        date: '2022-01',
-        label: 'Project Launch',
+        id: 'first-commit',
+        date: '2016-11',
+        label: 'First Commit',
         description:
-          'Official launch with initial chamber framework and SPA navigation.',
-        era: 'genesis',
-      },
-      {
-        id: 'pantheon',
-        date: '2024-03',
-        label: 'Living Pantheon',
-        description:
-          'Introduction of the Living Pantheon system — the temple begins to breathe.',
-        era: 'refinement',
+          'The earliest code preserved in git (35737fe, 2016-11-28) — the origin made durable.',
+        era: 'origin',
       },
       {
         id: 'ogod3d',
@@ -57,7 +56,7 @@ class KhronosTimeline {
         label: 'OGOD 3D',
         description:
           '29-track immersive 3D experience with WebGL environments.',
-        era: 'integration',
+        era: 'temple',
       },
       {
         id: 'discovery',
@@ -65,7 +64,15 @@ class KhronosTimeline {
         label: 'Discovery System',
         description:
           'Cross-chamber search, filtering, and related works engine.',
-        era: 'integration',
+        era: 'temple',
+      },
+      {
+        id: 'pantheon',
+        date: '2025-11',
+        label: 'The Living Pantheon',
+        description:
+          'The origin is rebuilt as a temple — nine chambers (Akademia, Bibliotheke, Pinakotheke, Odeion…) for an artist-academic body of work.',
+        era: 'temple',
       },
       {
         id: 'activation',
@@ -73,15 +80,15 @@ class KhronosTimeline {
         label: 'Full Temple Activation',
         description:
           'Breathing animations, exhibit portal, Odeion player — the temple lives.',
-        era: 'integration',
+        era: 'temple',
       },
       {
-        id: 'awakening',
-        date: '2026-02',
-        label: 'The Awakening',
+        id: 'bridge',
+        date: '2026-06',
+        label: 'The Bridge',
         description:
-          'Generative chambers activate — procedural art, poetry, and interaction.',
-        era: 'integration',
+          'Academic and artist as one body. AMP LAB MEDIA / objectlessons.film become the present-day face; the portfolio becomes a public attractor, not a tip-jar.',
+        era: 'bridge',
       },
     ];
 
@@ -89,37 +96,23 @@ class KhronosTimeline {
       {
         id: 'origin',
         label: 'Origin',
-        startDate: '2016-11',
-        endDate: '2021-12',
+        startDate: '2011-01',
+        endDate: '2016-11',
         color: '#1a1a3e',
       },
       {
-        id: 'genesis',
-        label: 'Genesis',
-        startDate: '2022-01',
-        endDate: '2022-12',
-        color: '#87ceeb',
-      },
-      {
-        id: 'expansion',
-        label: 'Expansion',
-        startDate: '2023-01',
-        endDate: '2023-12',
+        id: 'temple',
+        label: 'The Temple',
+        startDate: '2016-11',
+        endDate: '2026-05',
         color: '#6495ed',
       },
       {
-        id: 'refinement',
-        label: 'Refinement',
-        startDate: '2024-01',
-        endDate: '2024-12',
-        color: '#6495ed',
-      },
-      {
-        id: 'integration',
-        label: 'Integration',
-        startDate: '2025-01',
+        id: 'bridge',
+        label: 'The Bridge',
+        startDate: '2026-05',
         endDate: '2026-12',
-        color: '#00008b',
+        color: '#00bfff',
       },
     ];
 
@@ -166,7 +159,7 @@ class KhronosTimeline {
   _dateToX(dateStr) {
     const [year, month] = dateStr.split('-').map(Number);
     const dateVal = year + (month - 1) / 12;
-    const minDate = 2016 + 10 / 12; // 2016-11
+    const minDate = 2011; // 2011 — the origin (etceter4.com, predates git)
     const maxDate = 2026 + 11 / 12; // 2026-12
     const range = maxDate - minDate;
     return (
