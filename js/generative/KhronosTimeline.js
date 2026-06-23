@@ -28,11 +28,15 @@ class KhronosTimeline {
     this.activeDetail = null;
 
     // The real lineage — origin → temple → present (the "together" throughline).
-    // Anchored only on sourceable dates: 2011 (the original site, predates git),
-    // 2016-11 (first commit 35737fe), 2025-11 (the Pantheon rebuild — cf.
-    // SESSION_SUMMARY_2025-11-03 in the origin repo), 2026 (the present face).
-    // The temple's real feature-milestones (OGOD 3D, Discovery, Activation) are kept
-    // but re-grouped under the 'temple' era rather than asserting invented launch dates.
+    // Every date is anchored on the repo's own git history (commit dates), NOT guessed:
+    //   2011        the original site (etceter4.com, predates git)
+    //   2016-11-06  first commit d3b4dbe — then years dormant
+    //   2025-08     the reboot (modernization plan)
+    //   2025-10/11  Pantheon conceived (generative systems, Akademia, self-hosted media)
+    //   2026-01     OGOD 3D (commits 2026-01-25..28: VR, shaders, audio engine)
+    //   2026-02     the Living Pantheon activated (8a70686/6ba0374/fa44928 — 9 chambers, 43 commits)
+    //   2026-06     the Bridge (present)
+    // The winter sprint (Dec 2025–Feb 2026) is when the temple actually came alive.
     this.milestones = [
       {
         id: 'origin',
@@ -47,39 +51,39 @@ class KhronosTimeline {
         date: '2016-11',
         label: 'First Commit',
         description:
-          'The earliest code preserved in git (35737fe, 2016-11-28) — the origin made durable.',
+          'The earliest code preserved in git (d3b4dbe, 2016-11-06) — the origin made durable. Then years dormant.',
         era: 'origin',
       },
       {
-        id: 'ogod3d',
-        date: '2025-06',
-        label: 'OGOD 3D',
+        id: 'reboot',
+        date: '2025-08',
+        label: 'The Reboot',
         description:
-          '29-track immersive 3D experience with WebGL environments.',
+          'The dormant origin reawakens — repository analysis and a modernization plan begin the rebuild.',
         era: 'temple',
       },
       {
-        id: 'discovery',
+        id: 'pantheon-seed',
         date: '2025-10',
-        label: 'Discovery System',
+        label: 'Pantheon Conceived',
         description:
-          'Cross-chamber search, filtering, and related works engine.',
+          'The Living Pantheon design takes form — generative systems, the Akademia chamber, and self-hosted audio/video infrastructure.',
+        era: 'temple',
+      },
+      {
+        id: 'ogod3d',
+        date: '2026-01',
+        label: 'OGOD 3D',
+        description:
+          '29-track immersive WebGL experience — VR, audio-reactive shaders, post-processing. The deepest single build of the winter.',
         era: 'temple',
       },
       {
         id: 'pantheon',
-        date: '2025-11',
+        date: '2026-02',
         label: 'The Living Pantheon',
         description:
-          'The origin is rebuilt as a temple — nine chambers (Akademia, Bibliotheke, Pinakotheke, Odeion…) for an artist-academic body of work.',
-        era: 'temple',
-      },
-      {
-        id: 'activation',
-        date: '2026-02',
-        label: 'Full Temple Activation',
-        description:
-          'Breathing animations, exhibit portal, Odeion player — the temple lives.',
+          'The peak winter sprint: nine chambers (Akademia, Bibliotheke, Pinakotheke, Odeion…) implemented and activated, the discovery system, and lazy-loaded chamber architecture. The temple comes alive.',
         era: 'temple',
       },
       {
@@ -97,13 +101,13 @@ class KhronosTimeline {
         id: 'origin',
         label: 'Origin',
         startDate: '2011-01',
-        endDate: '2016-11',
+        endDate: '2025-08',
         color: '#1a1a3e',
       },
       {
         id: 'temple',
         label: 'The Temple',
-        startDate: '2016-11',
+        startDate: '2025-08',
         endDate: '2026-05',
         color: '#6495ed',
       },
