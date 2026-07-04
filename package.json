@@ -38,6 +38,7 @@
     "format": "prettier --config .config/prettierrc.json --write index.html css/*.css js/main.js js/page.js js/pageData.js js/images.js js/diary.js js/ogod.js js/analytics.js js/config.js js/audioPlayer.js js/videoPlayer.js js/nameSearch.js js/namingAPI.js js/namingStrategies.js js/loophole.js js/sketch.js js/3d/ui/*.js js/living-pantheon/*.js js/media/**/*.js js/ergasterion/*.js js/ogod/utils/*.js js/generative/*.js",
     "format:check": "prettier --config .config/prettierrc.json --check index.html css/*.css js/main.js js/page.js js/pageData.js js/images.js js/diary.js js/ogod.js js/analytics.js js/config.js js/audioPlayer.js js/videoPlayer.js js/nameSearch.js js/namingAPI.js js/namingStrategies.js js/loophole.js js/sketch.js js/3d/ui/*.js js/living-pantheon/*.js js/media/**/*.js js/ergasterion/*.js js/ogod/utils/*.js js/generative/*.js",
     "validate": "npm run lint && npm run format:check",
+    "verify:image-manifest": "node scripts/gen-image-manifest.mjs && node scripts/verify-image-manifest.mjs",
     "validate:package-lock": "node scripts/validate-package-lock.js",
     "test": "playwright test --config .config/playwright.config.js",
     "test:headed": "playwright test --config .config/playwright.config.js --headed",
