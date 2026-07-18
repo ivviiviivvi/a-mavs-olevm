@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ET CETER4 — Anthony Padavano. Composer of sounds / words / images. Photography, film, generative art, sound, writing.">
+  <title>ET CETER4 — composer of sounds / words / images</title>
+  <style>
+    /* ─── RESET + CUSTOM PROPERTIES ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0a0b;
+      --bg-2:     #111113;
+      --bg-3:     #18181b;
+      --surface:  #1e1e22;
+      --border:   #2a2a2f;
+      --ember:    #c8a26e;          /* warm bone/amber accent */
+      --ember-lo: rgba(200,162,110,0.12);
+      --text:     #e8e6e1;
+      --text-dim: #8a8880;
+      --text-faint: #4a4a50;
+      --white:    #f4f2ed;
+
+      --serif:    Georgia, 'Times New Roman', Times, serif;
+      --grotesk:  'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+      --mono:     'SF Mono', ui-monospace, Menlo, 'Courier New', monospace;
+
+      --gap-s:  0.75rem;
+      --gap-m:  1.5rem;
+      --gap-l:  3rem;
+      --gap-xl: 6rem;
+
+      --ease-film: cubic-bezier(0.25, 0.1, 0.25, 1);
+      --dur: 0.6s;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--grotesk);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* ─── SKIP LINK ──────────────────────────────────────────────────────── */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      background: var(--ember);
+      color: var(--bg);
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-family: var(--mono);
+      letter-spacing: 0.05em;
+      z-index: 9999;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    /* ─── NAVIGATION ─────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      background: linear-gradient(to bottom, rgba(10,10,11,0.92) 0%, transparent 100%);
+      backdrop-filter: blur(0px);
+      transition: background var(--dur) var(--ease-film),
+                  backdrop-filter var(--dur) var(--ease-film);
+    }
+    nav.scrolled {
+      background: rgba(10,10,11,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-wordmark {
+      font-family: var(--serif);
+      font-size: 1rem;
+      letter-spacing: 0.18em;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+    .nav-wordmark:focus-visible {
+      outline: 1px solid var(--ember);
+      outline-offset: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ember); }
+    .nav-links a:focus-visible {
+      outline: 1px solid var(--ember);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+      .nav-links a { font-size: 0.65rem; }
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      min-height: 600px;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      overflow: hidden;
+    }
+
+    /* Cinematic strip: three overlapping frames */
+    .hero-strip {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr 0.8fr;
+      gap: 1px;
+    }
+    .hero-strip figure {
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-strip figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.55;
+      transform: scale(1.04);
+      transition: opacity 8s var(--ease-film), transform 8s var(--ease-film);
+    }
+    .hero-strip figure:nth-child(2) img { opacity: 0.72; }
+    .hero-strip figure:nth-child(3) img { opacity: 0.38; }
+
+    /* Gradient veil over the strip */
+    .hero-veil {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(10,10,11,0.35) 0%,
+          rgba(10,10,11,0.05) 40%,
+          rgba(10,10,11,0.45) 75%,
+          rgba(10,10,11,0.95) 100%),
+        linear-gradient(to right,
+          rgba(10,10,11,0.5) 0%,
+          transparent 30%,
+          transparent 70%,
+          rgba(10,10,11,0.4) 100%);
+    }
+
+    /* Grain texture overlay */
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 2.5rem 4rem;
+      max-width: 900px;
+    }
+
+    .hero-overline {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ember);
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fade-up var(--dur) var(--ease-film) 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 10vw, 8.5rem);
+      font-weight: 400;
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fade-up 0.8s var(--ease-film) 0.5s forwards;
+    }
+
+    .hero-tagline {
+      font-family: var(--grotesk);
+      font-size: clamp(0.8rem, 1.8vw, 1rem);
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      font-weight: 400;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fade-up var(--dur) var(--ease-film) 0.8s forwards;
+    }
+
+    .hero-scroll-cue {
+      position: absolute;
+      bottom: 2rem;
+      right: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      opacity: 0;
+      animation: fade-up var(--dur) var(--ease-film) 1.2s forwards;
+    }
+    .hero-scroll-cue::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 2.5rem;
+      background: linear-gradient(to bottom, transparent, var(--text-faint));
+    }
+
+    @keyframes fade-up {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .hero-strip { grid-template-columns: 1fr 1fr; }
+      .hero-strip figure:nth-child(3) { display: none; }
+      .hero-content { padding: 0 1.25rem 3rem; }
+    }
+
+    /* ─── SECTION WRAPPER ────────────────────────────────────────────────── */
+    .section {
+      padding: var(--gap-xl) 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: var(--gap-l);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ember);
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    .section-count {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      margin-left: auto;
+    }
+
+    /* ─── WORK SECTION ───────────────────────────────────────────────────── */
+    #work { background: var(--bg); }
+
+    /* Category filter tabs */
+    .gallery-filters {
+      display: flex;
+      gap: 0.25rem;
+      margin-bottom: var(--gap-m);
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.9rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      color: var(--ember);
+      border-color: var(--ember);
+      background: var(--ember-lo);
+    }
+    .filter-btn:focus-visible {
+      outline: 1px solid var(--ember);
+      outline-offset: 2px;
+    }
+
+    /* Masonry-ish exhibition grid */
+    .gallery-grid {
+      columns: 3 280px;
+      column-gap: 2px;
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2px;
+      cursor: pointer;
+      background: var(--bg-3);
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      transition: transform 0.7s var(--ease-film), filter 0.4s var(--ease-film);
+      filter: brightness(0.88) saturate(0.9);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.04);
+      filter: brightness(1) saturate(1);
+    }
+
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,11,0.85) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.35s var(--ease-film);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.25rem;
+    }
+    .gallery-item:hover .gallery-item-overlay,
+    .gallery-item:focus-within .gallery-item-overlay {
+      opacity: 1;
+    }
+
+    .gallery-item-series {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ember);
+      margin-bottom: 0.2rem;
+    }
+
+    .gallery-item-cat {
+      font-family: var(--grotesk);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 0.04em;
+    }
+
+    /* Focus style for keyboard navigation */
+    .gallery-item:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: -2px;
+    }
+
+    /* ─── LIGHTBOX ───────────────────────────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(10,10,11,0.97);
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox.open {
+      display: flex;
+      animation: lb-in 0.3s var(--ease-film);
+    }
+    @keyframes lb-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      box-shadow: 0 0 80px rgba(0,0,0,0.8);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lightbox-close:hover { color: var(--ember); border-color: var(--ember); }
+    .lightbox-close:focus-visible { outline: 1px solid var(--ember); }
+    .lightbox-meta {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+    .lightbox-series {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ember);
+    }
+    .lightbox-cat {
+      font-family: var(--grotesk);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lightbox-nav:hover { color: var(--ember); border-color: var(--ember); }
+    .lightbox-nav.prev { left: 1.5rem; }
+    .lightbox-nav.next { right: 1.5rem; }
+    @media (max-width: 640px) {
+      .lightbox-nav { display: none; }
+    }
+
+    /* ─── STUDIES SECTION ────────────────────────────────────────────────── */
+    #studies {
+      background: var(--bg-2);
+    }
+
+    .studies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .study-card {
+      background: var(--bg-2);
+      padding: 2rem 1.75rem;
+      transition: background 0.3s var(--ease-film);
+    }
+    .study-card:hover { background: var(--bg-3); }
+
+    .study-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ember);
+      border: 1px solid var(--ember-lo);
+      padding: 0.2rem 0.55rem;
+      margin-bottom: 1rem;
+      background: var(--ember-lo);
+    }
+
+    .study-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.35;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.005em;
+    }
+
+    .study-dek {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+    }
+
+    .study-meta {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+    }
+
+    .study-incoming {
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      margin-top: var(--gap-l);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .study-incoming p {
+      font-size: 0.8rem;
+      color: var(--text-faint);
+      font-family: var(--mono);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── SOUND + WORDS SECTION ──────────────────────────────────────────── */
+    #pillars {
+      background: var(--bg);
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .pillar-card {
+      background: var(--bg);
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: background 0.3s var(--ease-film);
+    }
+    .pillar-card:hover { background: var(--bg-2); }
+
+    .pillar-glyph {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      color: var(--ember);
+      line-height: 1;
+      opacity: 0.7;
+    }
+
+    .pillar-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ember);
+    }
+
+    .pillar-name {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    .pillar-body {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      max-width: 36ch;
+    }
+
+    .pillar-link {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ember);
+      text-decoration: none;
+      border-bottom: 1px solid var(--ember-lo);
+      padding-bottom: 1px;
+      width: fit-content;
+      transition: border-color 0.2s;
+    }
+    .pillar-link:hover { border-color: var(--ember); }
+    .pillar-link:focus-visible { outline: 1px solid var(--ember); outline-offset: 3px; }
+
+    @media (max-width: 640px) {
+      .pillars-grid { grid-template-columns: 1fr; }
+      .pillar-card { padding: 2rem 1.5rem; }
+    }
+
+    /* ─── ABOUT + CONTACT SECTION ────────────────────────────────────────── */
+    #about {
+      background: var(--bg-2);
+    }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-xl);
+      align-items: start;
+    }
+
+    .about-bio {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-m);
+    }
+
+    .about-name {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: -0.015em;
+      line-height: 1.1;
+    }
+
+    .about-text {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.75;
+      max-width: 52ch;
+    }
+    .about-text strong { color: var(--text); font-weight: 500; }
+
+    .about-disciplines {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .discipline-tag {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.6rem;
+    }
+
+    /* Contact column */
+    .about-connect {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-m);
+      padding-top: 0.25rem;
+    }
+
+    .connect-title {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ember);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+
+    .connect-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .connect-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .connect-row:hover { background: var(--ember-lo); margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; }
+    .connect-row:focus-visible { outline: 1px solid var(--ember); outline-offset: 2px; }
+
+    .connect-platform {
+      font-family: var(--grotesk);
+      font-size: 0.88rem;
+      color: var(--white);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .connect-handle {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--ember);
+    }
+
+    .connect-arrow {
+      font-size: 0.8rem;
+      color: var(--text-faint);
+      margin-left: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .about-layout {
+        grid-template-columns: 1fr;
+        gap: var(--gap-l);
+      }
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────────────────── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-mark {
+      font-family: var(--serif);
+      font-size: 0.85rem;
+      letter-spacing: 0.14em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+    }
+
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+    }
+
+    /* ─── SCROLL REVEAL ──────────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s var(--ease-film), transform 0.7s var(--ease-film);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── REDUCED MOTION ─────────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+      .hero-overline, .hero-title, .hero-tagline, .hero-scroll-cue {
+        opacity: 1; transform: none; animation: none;
+      }
+    }
+
+    /* ─── UTILITY ────────────────────────────────────────────────────────── */
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+    }
+
+    a { color: inherit; }
+
+    /* ─── NARROW LAYOUT ADJUSTMENTS ──────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .section { padding: 3.5rem 1.25rem; }
+      .section-title { font-size: 1.5rem; }
+      .gallery-grid { columns: 2 140px; }
+      .studies-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#work" class="skip-link">Skip to main content</a>
+
+  <!-- ─── NAV ──────────────────────────────────────────────────────────── -->
+  <nav id="nav" role="navigation" aria-label="Site navigation">
+    <a href="#hero" class="nav-wordmark" aria-label="ET CETER4 — home">ET CETER4</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#studies">Studies</a></li>
+      <li><a href="#pillars">Sound / Words</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────────────────────────────── -->
+  <section id="hero" aria-label="Hero — ET CETER4">
+    <div class="hero-strip" aria-hidden="true">
+      <figure>
+        <img src="../img/photos/media/media1.jpg" alt="">
+      </figure>
+      <figure>
+        <img src="../img/photos/diary/diary10.jpg" alt="">
+      </figure>
+      <figure>
+        <img src="../img/photos/glitchpr0n/glitch1.png" alt="">
+      </figure>
+    </div>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="hero-grain" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <p class="hero-overline">Anthony Padavano</p>
+      <h1 class="hero-title">ET<br>CETER4</h1>
+      <p class="hero-tagline">composer of sounds / words / images</p>
+    </div>
+
+    <div class="hero-scroll-cue" aria-hidden="true">scroll</div>
+  </section>
+
+  <!-- ─── WORK ─────────────────────────────────────────────────────────── -->
+  <main id="work">
+    <div class="section">
+      <div class="section-header reveal">
+        <span class="section-label">01</span>
+        <h2 class="section-title">Work</h2>
+        <span class="section-count" aria-label="23 items">23 frames</span>
+      </div>
+
+      <div class="gallery-filters reveal" role="group" aria-label="Filter by category">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="photography">Photography</button>
+        <button class="filter-btn" data-filter="film">Film / Diary</button>
+        <button class="filter-btn" data-filter="multimedia">Multimedia</button>
+        <button class="filter-btn" data-filter="generative">Generative</button>
+      </div>
+
+      <div class="gallery-grid reveal" id="gallery" role="list" aria-label="Image gallery">
+
+        <!-- Photography — live series -->
+        <div class="gallery-item" data-cat="photography" data-series="Live" role="listitem" tabindex="0"
+             data-src="../img/photos/live/live1.jpg" aria-label="Live series, photograph 1">
+          <img src="../img/photos/live/live1.jpg" alt="Live performance photograph, series: Live" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Live</p>
+            <p class="gallery-item-cat">Photography</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="photography" data-series="Live" role="listitem" tabindex="0"
+             data-src="../img/photos/live/live2.jpg" aria-label="Live series, photograph 2">
+          <img src="../img/photos/live/live2.jpg" alt="Live performance photograph, series: Live" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Live</p>
+            <p class="gallery-item-cat">Photography</p>
+          </div>
+        </div>
+
+        <!-- Generative — glitch series (interspersed for visual rhythm) -->
+        <div class="gallery-item" data-cat="generative" data-series="Glitchpr0n" role="listitem" tabindex="0"
+             data-src="../img/photos/glitchpr0n/glitch1.png" aria-label="Glitch art, series: Glitchpr0n, image 1">
+          <img src="../img/photos/glitchpr0n/glitch1.png" alt="Generative glitch artwork, series: Glitchpr0n" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Glitchpr0n</p>
+            <p class="gallery-item-cat">Generative / Glitch</p>
+          </div>
+        </div>
+
+        <!-- Film / Diary -->
+        <div class="gallery-item" data-cat="film" data-series="Diary" role="listitem" tabindex="0"
+             data-src="../img/photos/diary/diary1.jpg" aria-label="Diary series, film frame 1">
+          <img src="../img/photos/diary/diary1.jpg" alt="Film diary photograph, series: Diary" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Diary</p>
+            <p class="gallery-item-cat">Film / Diary</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="film" data-series="Faster" role="listitem" tabindex="0"
+             data-src="../img/photos/faster/faster1.jpg" aria-label="Faster series, film frame 1">
+          <img src="../img/photos/faster/faster1.jpg" alt="Film frame, series: Faster" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Faster</p>
+            <p class="gallery-item-cat">Film / Video</p>
+          </div>
+        </div>
+
+        <!-- Multimedia — media series -->
+        <div class="gallery-item" data-cat="multimedia" data-series="Media" role="listitem" tabindex="0"
+             data-src="../img/photos/media/media1.jpg" aria-label="Media series, multimedia frame 1">
+          <img src="../img/photos/media/media1.jpg" alt="Multimedia work, series: Media" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Media</p>
+            <p class="gallery-item-cat">Multimedia</p>
+          </div>
+        </div>
+
+        <!-- Generative -->
+        <div class="gallery-item" data-cat="generative" data-series="Glitchpr0n" role="listitem" tabindex="0"
+             data-src="../img/photos/glitchpr0n/glitch10.png" aria-label="Glitch art, series: Glitchpr0n, image 10">
+          <img src="../img/photos/glitchpr0n/glitch10.png" alt="Generative glitch artwork" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Glitchpr0n</p>
+            <p class="gallery-item-cat">Generative / Glitch</p>
+          </div>
+        </div>
+
+        <!-- Photography — slip series -->
+        <div class="gallery-item" data-cat="photography" data-series="Slip" role="listitem" tabindex="0"
+             data-src="../img/photos/slip/slip1.jpg" aria-label="Slip series, photograph 1">
+          <img src="../img/photos/slip/slip1.jpg" alt="Photograph, series: Slip" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Slip</p>
+            <p class="gallery-item-cat">Photography</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="film" data-series="Diary" role="listitem" tabindex="0"
+             data-src="../img/photos/diary/diary11.jpg" aria-label="Diary series, film frame 11">
+          <img src="../img/photos/diary/diary11.jpg" alt="Film diary frame, series: Diary" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Diary</p>
+            <p class="gallery-item-cat">Film / Diary</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="photography" data-series="Live" role="listitem" tabindex="0"
+             data-src="../img/photos/live/live3.jpg" aria-label="Live series, photograph 3">
+          <img src="../img/photos/live/live3.jpg" alt="Live performance photograph" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Live</p>
+            <p class="gallery-item-cat">Photography</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="generative" data-series="Glitchpr0n" role="listitem" tabindex="0"
+             data-src="../img/photos/glitchpr0n/glitch11.png" aria-label="Glitch art, image 11">
+          <img src="../img/photos/glitchpr0n/glitch11.png" alt="Generative glitch artwork" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Glitchpr0n</p>
+            <p class="gallery-item-cat">Generative / Glitch</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="film" data-series="Faster" role="listitem" tabindex="0"
+             data-src="../img/photos/faster/faster10.jpg" aria-label="Faster series, film frame 10">
+          <img src="../img/photos/faster/faster10.jpg" alt="Film frame, series: Faster" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Faster</p>
+            <p class="gallery-item-cat">Film / Video</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="multimedia" data-series="Media" role="listitem" tabindex="0"
+             data-src="../img/photos/media/media12.jpg" aria-label="Media series, multimedia frame 12">
+          <img src="../img/photos/media/media12.jpg" alt="Multimedia work" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Media</p>
+            <p class="gallery-item-cat">Multimedia</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="photography" data-series="Slip" role="listitem" tabindex="0"
+             data-src="../img/photos/slip/slip2.jpg" aria-label="Slip series, photograph 2">
+          <img src="../img/photos/slip/slip2.jpg" alt="Photograph, series: Slip" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Slip</p>
+            <p class="gallery-item-cat">Photography</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="generative" data-series="Glitchpr0n" role="listitem" tabindex="0"
+             data-src="../img/photos/glitchpr0n/glitch12.png" aria-label="Glitch art, image 12">
+          <img src="../img/photos/glitchpr0n/glitch12.png" alt="Generative glitch artwork" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Glitchpr0n</p>
+            <p class="gallery-item-cat">Generative / Glitch</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="film" data-series="Faster" role="listitem" tabindex="0"
+             data-src="../img/photos/faster/faster11.jpg" aria-label="Faster series, film frame 11">
+          <img src="../img/photos/faster/faster11.jpg" alt="Film frame, series: Faster" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Faster</p>
+            <p class="gallery-item-cat">Film / Video</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="photography" data-series="Live" role="listitem" tabindex="0"
+             data-src="../img/photos/live/live4.jpg" aria-label="Live series, photograph 4">
+          <img src="../img/photos/live/live4.jpg" alt="Live performance photograph" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Live</p>
+            <p class="gallery-item-cat">Photography</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="multimedia" data-series="Media" role="listitem" tabindex="0"
+             data-src="../img/photos/media/media13.jpg" aria-label="Media series, multimedia frame 13">
+          <img src="../img/photos/media/media13.jpg" alt="Multimedia work" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Media</p>
+            <p class="gallery-item-cat">Multimedia</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="photography" data-series="Slip" role="listitem" tabindex="0"
+             data-src="../img/photos/slip/slip3.jpg" aria-label="Slip series, photograph 3">
+          <img src="../img/photos/slip/slip3.jpg" alt="Photograph, series: Slip" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Slip</p>
+            <p class="gallery-item-cat">Photography</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="film" data-series="Diary" role="listitem" tabindex="0"
+             data-src="../img/photos/diary/diary10.jpg" aria-label="Diary series, film frame 10">
+          <img src="../img/photos/diary/diary10.jpg" alt="Film diary frame" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Diary</p>
+            <p class="gallery-item-cat">Film / Diary</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="multimedia" data-series="Media" role="listitem" tabindex="0"
+             data-src="../img/photos/media/media14.jpg" aria-label="Media series, multimedia frame 14">
+          <img src="../img/photos/media/media14.jpg" alt="Multimedia work" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Media</p>
+            <p class="gallery-item-cat">Multimedia</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="photography" data-series="Slip" role="listitem" tabindex="0"
+             data-src="../img/photos/slip/slip4.jpg" aria-label="Slip series, photograph 4">
+          <img src="../img/photos/slip/slip4.jpg" alt="Photograph, series: Slip" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Slip</p>
+            <p class="gallery-item-cat">Photography</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-cat="film" data-series="Faster" role="listitem" tabindex="0"
+             data-src="../img/photos/faster/faster12.jpg" aria-label="Faster series, film frame 12">
+          <img src="../img/photos/faster/faster12.jpg" alt="Film frame, series: Faster" loading="lazy">
+          <div class="gallery-item-overlay">
+            <p class="gallery-item-series">Faster</p>
+            <p class="gallery-item-cat">Film / Video</p>
+          </div>
+        </div>
+
+      </div><!-- /gallery-grid -->
+    </div><!-- /section -->
+  </main>
+
+  <!-- ─── LIGHTBOX ──────────────────────────────────────────────────────── -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image lightbox">
+    <button class="lightbox-close" id="lb-close" aria-label="Close lightbox">ESC / close</button>
+    <button class="lightbox-nav prev" id="lb-prev" aria-label="Previous image">&#8592;</button>
+    <img class="lightbox-img" id="lb-img" src="" alt="">
+    <button class="lightbox-nav next" id="lb-next" aria-label="Next image">&#8594;</button>
+    <div class="lightbox-meta">
+      <p class="lightbox-series" id="lb-series"></p>
+      <p class="lightbox-cat" id="lb-cat"></p>
+    </div>
+  </div>
+
+  <!-- ─── STUDIES ───────────────────────────────────────────────────────── -->
+  <section id="studies" aria-labelledby="studies-heading">
+    <div class="section">
+      <div class="section-header reveal">
+        <span class="section-label">02</span>
+        <h2 class="section-title" id="studies-heading">Studies</h2>
+        <span class="section-count">Process / Technique / Art History</span>
+      </div>
+
+      <div class="studies-grid reveal">
+
+        <article class="study-card">
+          <span class="study-tag">Technique</span>
+          <h3 class="study-title">On the Materiality of the Scan</h3>
+          <p class="study-dek">How flatbed scanning as a medium introduces its own grain, artifacts, and temporal flatness — distinct from photography's optical blur.</p>
+          <p class="study-meta">in progress &mdash; 2026</p>
+        </article>
+
+        <article class="study-card">
+          <span class="study-tag">Art History</span>
+          <h3 class="study-title">Glitch as Baroque: Excess, Rupture, and the Edge of Control</h3>
+          <p class="study-dek">A reading of databending and circuit bending aesthetics through the lens of Baroque excess — both traditions privilege the moment when the system overwhelms its own order.</p>
+          <p class="study-meta">drafting &mdash; 2026</p>
+        </article>
+
+        <article class="study-card">
+          <span class="study-tag">Process</span>
+          <h3 class="study-title">Score as Script: Composing Time in Sound and Film</h3>
+          <p class="study-dek">Working notes on the parallel logics of a musical score and a film edit — both are instructions for a performance that exceeds the notation.</p>
+          <p class="study-meta">notes &mdash; 2026</p>
+        </article>
+
+      </div>
+
+      <div class="study-incoming reveal">
+        <p>More studies forthcoming &mdash; build in public</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SOUND / WORDS ─────────────────────────────────────────────────── -->
+  <section id="pillars" aria-labelledby="pillars-heading">
+    <div class="section">
+      <div class="section-header reveal">
+        <span class="section-label">03</span>
+        <h2 class="section-title" id="pillars-heading">Sound &amp; Words</h2>
+      </div>
+
+      <div class="pillars-grid reveal">
+
+        <div class="pillar-card">
+          <div class="pillar-glyph" aria-hidden="true">♩</div>
+          <p class="pillar-label">Sound</p>
+          <h3 class="pillar-name">Music &amp; Audio</h3>
+          <p class="pillar-body">Compositions, sound design, and recorded work spanning ambient, electronic, and experimental forms. Influence: Eno, Autechre, Alvin Lucier.</p>
+          <a href="#" class="pillar-link" aria-label="Listen to sound work (coming soon)">Listen &#8599;</a>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-glyph" aria-hidden="true">&#182;</div>
+          <p class="pillar-label">Words</p>
+          <h3 class="pillar-name">Writing &amp; Text</h3>
+          <p class="pillar-body">Critical writing, scholarship, and literary work. Interests: media theory, art history, poetics, and the intersections of language and image.</p>
+          <a href="#" class="pillar-link" aria-label="Read writing (coming soon)">Read &#8599;</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT + CONTACT ───────────────────────────────────────────────── -->
+  <section id="about" aria-labelledby="about-heading">
+    <div class="section">
+      <div class="section-header reveal">
+        <span class="section-label">04</span>
+        <h2 class="section-title" id="about-heading">About</h2>
+      </div>
+
+      <div class="about-layout reveal">
+
+        <div class="about-bio">
+          <h3 class="about-name">Anthony<br>Padavano</h3>
+
+          <p class="about-text">
+            <strong>Anthony Padavano</strong> is an academic and artist whose practice moves between photography, film and video, multimedia installation, generative and glitch art, and sound composition. His work attends to the textures of the overlooked &mdash; performance light, the materiality of the scan, the rhythm inside a static frame. Trained in art history and media studies, he treats practice and scholarship as a single inquiry, building a body of work that is intellectually serious and formally precise.
+          </p>
+
+          <div class="about-disciplines" aria-label="Disciplines">
+            <span class="discipline-tag">Photography</span>
+            <span class="discipline-tag">Film / Video</span>
+            <span class="discipline-tag">Generative Art</span>
+            <span class="discipline-tag">Sound Composition</span>
+            <span class="discipline-tag">Multimedia</span>
+            <span class="discipline-tag">Art History</span>
+            <span class="discipline-tag">Writing</span>
+          </div>
+        </div>
+
+        <div class="about-connect">
+          <p class="connect-title">Connect</p>
+          <nav class="connect-links" aria-label="External links and contact">
+
+            <a href="https://instagram.com/" class="connect-row" target="_blank" rel="noopener noreferrer">
+              <span class="connect-platform">Instagram</span>
+              <span>
+                <span class="connect-handle">@etceter4</span>
+                <span class="connect-arrow" aria-hidden="true">&#8599;</span>
+              </span>
+            </a>
+
+            <a href="mailto:padavano.anthony@gmail.com" class="connect-row">
+              <span class="connect-platform">Email</span>
+              <span>
+                <span class="connect-handle">padavano.anthony@gmail.com</span>
+                <span class="connect-arrow" aria-hidden="true">&#8599;</span>
+              </span>
+            </a>
+
+            <a href="#work" class="connect-row">
+              <span class="connect-platform">Portfolio</span>
+              <span>
+                <span class="connect-handle">Photography / Film / Generative</span>
+                <span class="connect-arrow" aria-hidden="true">&#8595;</span>
+              </span>
+            </a>
+
+          </nav>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────────────────── -->
+  <footer>
+    <span class="footer-mark">ET CETER4</span>
+    <span class="footer-copy">&copy; 2026 Anthony Padavano &mdash; composer of sounds / words / images</span>
+  </footer>
+
+  <!-- ─── JAVASCRIPT ────────────────────────────────────────────────────── -->
+  <script>
+    (function () {
+      'use strict';
+
+      // ── Scroll-based nav state ──────────────────────────────────────────
+      var nav = document.getElementById('nav');
+      function onScroll() {
+        if (window.scrollY > 60) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // ── Scroll reveal ───────────────────────────────────────────────────
+      var reveals = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var revealObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(function (el) { revealObserver.observe(el); });
+      } else {
+        // Fallback: show all
+        reveals.forEach(function (el) { el.classList.add('visible'); });
+      }
+
+      // ── Gallery filter ──────────────────────────────────────────────────
+      var filterBtns = document.querySelectorAll('.filter-btn');
+      var galleryItems = document.querySelectorAll('.gallery-item');
+
+      filterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var filter = btn.getAttribute('data-filter');
+
+          filterBtns.forEach(function (b) {
+            b.classList.remove('active');
+            b.setAttribute('aria-pressed', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-pressed', 'true');
+
+          galleryItems.forEach(function (item) {
+            var cat = item.getAttribute('data-cat');
+            if (filter === 'all' || cat === filter) {
+              item.style.display = '';
+              item.removeAttribute('aria-hidden');
+            } else {
+              item.style.display = 'none';
+              item.setAttribute('aria-hidden', 'true');
+            }
+          });
+        });
+      });
+
+      // ── Lightbox ────────────────────────────────────────────────────────
+      var lightbox   = document.getElementById('lightbox');
+      var lbImg      = document.getElementById('lb-img');
+      var lbSeries   = document.getElementById('lb-series');
+      var lbCat      = document.getElementById('lb-cat');
+      var lbClose    = document.getElementById('lb-close');
+      var lbPrev     = document.getElementById('lb-prev');
+      var lbNext     = document.getElementById('lb-next');
+
+      var allItems   = Array.from(galleryItems);
+      var currentIdx = 0;
+
+      function openLightbox(idx) {
+        var visibleItems = allItems.filter(function (it) {
+          return it.style.display !== 'none';
+        });
+        if (!visibleItems.length) return;
+        idx = ((idx % visibleItems.length) + visibleItems.length) % visibleItems.length;
+        currentIdx = idx;
+
+        var item   = visibleItems[idx];
+        var src    = item.getAttribute('data-src');
+        var series = item.getAttribute('data-series');
+        var cat    = item.querySelector('.gallery-item-cat').textContent;
+
+        lbImg.src      = src;
+        lbImg.alt      = item.getAttribute('aria-label') || '';
+        lbSeries.textContent = series;
+        lbCat.textContent    = cat;
+
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        lbClose.focus();
+
+        // Store visible items for nav
+        lightbox._visible  = visibleItems;
+        lightbox._idx      = idx;
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+      }
+
+      function navLightbox(dir) {
+        var visible = lightbox._visible || [];
+        var next    = ((lightbox._idx + dir) + visible.length) % visible.length;
+        openLightbox(next);
+        lightbox._idx = next;
+      }
+
+      galleryItems.forEach(function (item, idx) {
+        item.addEventListener('click', function () {
+          var visibleItems = allItems.filter(function (it) {
+            return it.style.display !== 'none';
+          });
+          var visIdx = visibleItems.indexOf(item);
+          openLightbox(visIdx >= 0 ? visIdx : 0);
+        });
+        item.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            item.click();
+          }
+        });
+      });
+
+      lbClose.addEventListener('click', closeLightbox);
+      lbPrev.addEventListener('click', function () { navLightbox(-1); });
+      lbNext.addEventListener('click', function () { navLightbox(1); });
+
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (!lightbox.classList.contains('open')) return;
+        if (e.key === 'Escape')      closeLightbox();
+        if (e.key === 'ArrowLeft')   navLightbox(-1);
+        if (e.key === 'ArrowRight')  navLightbox(1);
+      });
+
+      // ── Hero image slow drift (not running when reduced-motion) ─────────
+      var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (!mq.matches) {
+        var heroImgs = document.querySelectorAll('.hero-strip figure img');
+        heroImgs.forEach(function (img) {
+          img.style.transform = 'scale(1.04)';
+          // subtle drift handled by long CSS transition already loaded
+        });
+      }
+
+    }());
+  </script>
+</body>
+</html>

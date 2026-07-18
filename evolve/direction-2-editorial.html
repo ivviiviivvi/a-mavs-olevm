@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ET CETER4 — Anthony Padavano. Composer of sounds / words / images. Photography, film, multimedia, generative art." />
+  <title>ET CETER4 — Anthony Padavano</title>
+
+  <style>
+    /* ============================================================
+       TOKENS & RESETS
+       ============================================================ */
+    :root {
+      --ink:        #1a1614;
+      --ink-mid:    #3d3530;
+      --ink-faint:  #8a7f78;
+      --rule:       #c8bdb6;
+      --rule-heavy: #7a6e68;
+      --paper:      #f5f1ec;
+      --paper-warm: #ede8e1;
+      --accent:     #2b1f6e;     /* deep ink-blue / midnight */
+      --accent-alt: #7a1a2e;     /* oxblood, secondary use */
+      --highlight:  #e8e2d9;
+
+      --f-sans:  "Helvetica Neue", Arial, "Liberation Sans", system-ui, sans-serif;
+      --f-serif: Georgia, "Times New Roman", "Liberation Serif", serif;
+      --f-mono:  "SF Mono", ui-monospace, Menlo, "Courier New", monospace;
+
+      --gap:   clamp(1.5rem, 4vw, 3rem);
+      --col:   clamp(1rem, 5vw, 6rem);   /* side margin */
+      --max:   1380px;
+
+      --ease:  cubic-bezier(.22,.68,0,1.2);
+      --dur:   200ms;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--f-sans);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ============================================================
+       UTILITY CLASSES
+       ============================================================ */
+    .label {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .label--accent {
+      color: var(--accent);
+    }
+
+    .rule-top {
+      border-top: 1px solid var(--rule);
+      padding-top: var(--gap);
+    }
+
+    .rule-top--heavy {
+      border-top: 2px solid var(--ink);
+    }
+
+    .section-wrap {
+      max-width: var(--max);
+      margin-inline: auto;
+      padding-inline: var(--col);
+    }
+
+    /* focus states */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* ============================================================
+       NAV
+       ============================================================ */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .site-nav__inner {
+      max-width: var(--max);
+      margin-inline: auto;
+      padding-inline: var(--col);
+      height: 3.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .site-nav__wordmark {
+      font-family: var(--f-sans);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .site-nav__links {
+      display: flex;
+      gap: clamp(1rem, 3vw, 2.5rem);
+      list-style: none;
+    }
+
+    .site-nav__links a {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      transition: color var(--dur) ease;
+    }
+
+    .site-nav__links a:hover {
+      color: var(--ink);
+    }
+
+    @media (max-width: 520px) {
+      .site-nav__links {
+        display: none;
+      }
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      padding-block: clamp(3rem, 8vw, 6rem);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .hero__inner {
+      max-width: var(--max);
+      margin-inline: auto;
+      padding-inline: var(--col);
+    }
+
+    /* typographic grid header */
+    .hero__head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 1rem;
+      padding-bottom: clamp(1.5rem, 4vw, 3rem);
+      border-bottom: 2px solid var(--ink);
+      margin-bottom: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .hero__title-group {}
+
+    .hero__overline {
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero__name {
+      font-family: var(--f-sans);
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 0.9;
+      color: var(--ink);
+    }
+
+    .hero__name span {
+      color: var(--accent);
+    }
+
+    .hero__meta {
+      text-align: right;
+      align-self: end;
+    }
+
+    .hero__tagline {
+      font-family: var(--f-serif);
+      font-size: clamp(0.8rem, 1.5vw, 1rem);
+      font-style: italic;
+      color: var(--ink-mid);
+      line-height: 1.6;
+    }
+
+    .hero__tagline em {
+      font-style: normal;
+      font-family: var(--f-mono);
+      font-size: 0.75em;
+      color: var(--ink-faint);
+      display: block;
+      margin-top: 0.25rem;
+    }
+
+    @media (max-width: 600px) {
+      .hero__head {
+        grid-template-columns: 1fr;
+      }
+      .hero__meta {
+        text-align: left;
+      }
+    }
+
+    /* Hero image strip — 3-panel filmstrip */
+    .hero__strip {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3px;
+      height: clamp(220px, 35vw, 440px);
+    }
+
+    .hero__strip-item {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero__strip-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 600ms ease;
+    }
+
+    .hero__strip-item:hover img {
+      transform: scale(1.03);
+    }
+
+    .hero__strip-item--caption {
+      position: absolute;
+      bottom: 0.5rem;
+      left: 0.6rem;
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245,241,236,0.75);
+    }
+
+    .hero__caption-row {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .hero__index-note {
+      font-family: var(--f-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-faint);
+    }
+
+    .hero__discipline-row {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .hero__discipline {
+      font-family: var(--f-sans);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .hero__discipline--active {
+      color: var(--accent);
+    }
+
+    /* ============================================================
+       WORK — GALLERY
+       ============================================================ */
+    .work {
+      padding-block: clamp(2.5rem, 6vw, 5rem);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .section-header__number {
+      font-family: var(--f-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+
+    .section-header__title {
+      font-family: var(--f-sans);
+      font-size: clamp(0.8rem, 1.5vw, 1.125rem);
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .section-header__rule {
+      height: 1px;
+      background: var(--rule);
+      flex: 1;
+    }
+
+    /* Category filter tabs */
+    .gallery-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: clamp(1.5rem, 3vw, 2rem);
+      border-bottom: 1px solid var(--rule);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .gallery-tab {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--f-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      padding: 0.6rem 1.25rem;
+      border-bottom: 2px solid transparent;
+      transition: color var(--dur) ease, border-color var(--dur) ease;
+      white-space: nowrap;
+      margin-bottom: -1px;
+    }
+
+    .gallery-tab:hover {
+      color: var(--ink);
+    }
+
+    .gallery-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* Masonry-style plate layout */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: clamp(140px, 16vw, 220px);
+      gap: 3px;
+    }
+
+    .plate {
+      overflow: hidden;
+      position: relative;
+      background: var(--paper-warm);
+      cursor: pointer;
+    }
+
+    /* span configurations for varied layout */
+    .plate--wide  { grid-column: span 8; }
+    .plate--med   { grid-column: span 6; }
+    .plate--med4  { grid-column: span 4; }
+    .plate--tall  { grid-row: span 2; }
+    .plate--sq    { grid-column: span 4; }
+    .plate--third { grid-column: span 4; }
+
+    @media (max-width: 900px) {
+      .gallery-grid {
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: clamp(120px, 22vw, 200px);
+      }
+      .plate--wide  { grid-column: span 6; }
+      .plate--med   { grid-column: span 3; }
+      .plate--med4  { grid-column: span 3; }
+      .plate--sq    { grid-column: span 3; }
+      .plate--third { grid-column: span 3; }
+    }
+
+    @media (max-width: 520px) {
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: clamp(130px, 40vw, 200px);
+      }
+      .plate--wide,
+      .plate--med,
+      .plate--med4,
+      .plate--sq,
+      .plate--third { grid-column: span 2; }
+      .plate--tall  { grid-row: span 1; }
+    }
+
+    .plate img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 500ms ease, filter 400ms ease;
+      filter: contrast(1.02) saturate(0.95);
+    }
+
+    .plate:hover img {
+      transform: scale(1.04);
+      filter: contrast(1.05) saturate(1.05);
+    }
+
+    /* caption overlay */
+    .plate__caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem 0.75rem 0.6rem;
+      background: linear-gradient(to top, rgba(26,22,20,0.72) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity var(--dur) ease;
+      pointer-events: none;
+    }
+
+    .plate:hover .plate__caption {
+      opacity: 1;
+    }
+
+    .plate__caption-label {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(245,241,236,0.7);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .plate__caption-title {
+      font-family: var(--f-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--paper);
+    }
+
+    /* plate number corner tag */
+    .plate__num {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-family: var(--f-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      color: rgba(245,241,236,0.45);
+      pointer-events: none;
+    }
+
+    /* category section dividers */
+    .gallery-category-break {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--rule);
+      margin-top: 0.5rem;
+    }
+
+    .gallery-category-break span {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      white-space: nowrap;
+    }
+
+    .gallery-category-break hr {
+      flex: 1;
+      border: none;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    /* ============================================================
+       LIGHTBOX
+       ============================================================ */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(26,22,20,0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 250ms ease;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox__img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lightbox__close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--f-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245,241,236,0.55);
+      transition: color var(--dur) ease;
+    }
+
+    .lightbox__close:hover { color: var(--paper); }
+
+    .lightbox__meta {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .lightbox__series {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,241,236,0.45);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .lightbox__title {
+      font-family: var(--f-serif);
+      font-size: 0.9rem;
+      font-style: italic;
+      color: rgba(245,241,236,0.7);
+    }
+
+    /* ============================================================
+       STUDIES
+       ============================================================ */
+    .studies {
+      padding-block: clamp(2.5rem, 6vw, 5rem);
+      border-bottom: 1px solid var(--rule);
+      background: var(--paper-warm);
+    }
+
+    .studies__intro {
+      max-width: 36rem;
+      margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    .studies__intro p {
+      font-family: var(--f-serif);
+      font-size: clamp(0.875rem, 1.5vw, 1.0625rem);
+      line-height: 1.75;
+      color: var(--ink-mid);
+    }
+
+    .studies__intro p + p {
+      margin-top: 0.75rem;
+    }
+
+    .studies-index {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    @media (max-width: 720px) {
+      .studies-index {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .study-card {
+      border-top: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem 2rem 0;
+      position: relative;
+    }
+
+    .study-card + .study-card {
+      border-left: 1px solid var(--rule);
+      padding-left: 1.5rem;
+    }
+
+    @media (max-width: 720px) {
+      .study-card + .study-card {
+        border-left: none;
+        padding-left: 0;
+      }
+    }
+
+    .study-card__number {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .study-card__tag {
+      display: inline-block;
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--paper);
+      background: var(--accent);
+      padding: 0.2em 0.6em;
+      margin-bottom: 0.85rem;
+    }
+
+    .study-card__title {
+      font-family: var(--f-sans);
+      font-size: clamp(0.9rem, 1.8vw, 1.125rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+    }
+
+    .study-card__dek {
+      font-family: var(--f-serif);
+      font-size: 0.875rem;
+      font-style: italic;
+      line-height: 1.65;
+      color: var(--ink-mid);
+      margin-bottom: 1rem;
+    }
+
+    .study-card__meta {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--rule-heavy);
+    }
+
+    .study-card__cta {
+      display: inline-block;
+      margin-top: 1rem;
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 0.1em;
+      opacity: 0.75;
+    }
+
+    /* studies stream note */
+    .studies-stream-note {
+      margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .studies-stream-note span {
+      font-family: var(--f-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .studies-stream-note strong {
+      font-family: var(--f-mono);
+      font-size: 0.65rem;
+      color: var(--ink-mid);
+      font-weight: 600;
+    }
+
+    /* ============================================================
+       SOUND / WORDS
+       ============================================================ */
+    .pillars {
+      padding-block: clamp(2.5rem, 6vw, 5rem);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .pillars__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-top: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    @media (max-width: 520px) {
+      .pillars__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pillar {
+      padding: clamp(1.5rem, 3vw, 2.5rem);
+      border-top: 2px solid var(--ink);
+    }
+
+    .pillar + .pillar {
+      border-left: 1px solid var(--rule);
+    }
+
+    @media (max-width: 520px) {
+      .pillar + .pillar {
+        border-left: none;
+      }
+    }
+
+    .pillar__glyph {
+      font-family: var(--f-serif);
+      font-size: 2.5rem;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 1rem;
+      opacity: 0.7;
+    }
+
+    .pillar__label {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.4rem;
+    }
+
+    .pillar__title {
+      font-family: var(--f-sans);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+
+    .pillar__desc {
+      font-family: var(--f-serif);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--ink-mid);
+      font-style: italic;
+    }
+
+    .pillar__works {
+      margin-top: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .pillar__work-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--highlight);
+      gap: 0.5rem;
+    }
+
+    .pillar__work-name {
+      font-family: var(--f-sans);
+      font-size: 0.8rem;
+      color: var(--ink);
+    }
+
+    .pillar__work-year {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-faint);
+    }
+
+    /* ============================================================
+       ABOUT + CONTACT
+       ============================================================ */
+    .about {
+      padding-block: clamp(2.5rem, 6vw, 5rem);
+      background: var(--paper-warm);
+    }
+
+    .about__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+      margin-top: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    @media (max-width: 720px) {
+      .about__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .about__bio {
+      font-family: var(--f-serif);
+      font-size: clamp(0.9375rem, 1.6vw, 1.0625rem);
+      line-height: 1.85;
+      color: var(--ink-mid);
+    }
+
+    .about__bio p + p {
+      margin-top: 1em;
+    }
+
+    .about__bio strong {
+      font-family: var(--f-sans);
+      font-size: 0.9em;
+      font-weight: 700;
+      color: var(--ink);
+      font-style: normal;
+    }
+
+    /* marginalia */
+    .about__marginalia {
+      border-left: 2px solid var(--accent);
+      padding-left: 1.25rem;
+    }
+
+    .marginalia-item {
+      margin-bottom: 1.75rem;
+    }
+
+    .marginalia-item__head {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .marginalia-item__body {
+      font-family: var(--f-serif);
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--ink-mid);
+      font-style: italic;
+    }
+
+    .marginalia-item__body a {
+      color: var(--ink);
+      border-bottom: 1px solid var(--rule);
+      transition: border-color var(--dur) ease;
+    }
+
+    .marginalia-item__body a:hover {
+      border-color: var(--accent);
+    }
+
+    /* ============================================================
+       CONNECT ROW
+       ============================================================ */
+    .connect {
+      border-top: 2px solid var(--ink);
+      padding-top: clamp(1.5rem, 4vw, 3rem);
+      margin-top: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .connect__label {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.5rem;
+    }
+
+    .connect__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .connect-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--f-sans);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+      border: 1px solid var(--rule-heavy);
+      padding: 0.65rem 1.25rem;
+      transition: background var(--dur) ease, border-color var(--dur) ease, color var(--dur) ease;
+    }
+
+    .connect-link:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--paper);
+    }
+
+    .connect-link--primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--paper);
+    }
+
+    .connect-link--primary:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .site-footer {
+      border-top: 1px solid var(--rule);
+      padding-block: 1.75rem;
+    }
+
+    .site-footer__inner {
+      max-width: var(--max);
+      margin-inline: auto;
+      padding-inline: var(--col);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .site-footer__mark {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .site-footer__copy {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+    }
+
+    /* ============================================================
+       SCROLL REVEAL (subtle)
+       ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(1.5rem);
+      transition: opacity 500ms ease, transform 500ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       NAV
+       ============================================================ -->
+  <nav class="site-nav" role="navigation" aria-label="Site navigation">
+    <div class="site-nav__inner">
+      <span class="site-nav__wordmark">ET CETER4</span>
+      <ul class="site-nav__links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#studies">Studies</a></li>
+        <li><a href="#sound">Sound / Words</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero" id="home" aria-label="Introduction">
+    <div class="hero__inner">
+
+      <div class="hero__head">
+        <div class="hero__title-group">
+          <p class="hero__overline">Anthony Padavano — Portfolio</p>
+          <h1 class="hero__name">ET<br>CETER<span>4</span></h1>
+        </div>
+        <div class="hero__meta">
+          <p class="hero__tagline">
+            composer of sounds<br>
+            / words / images
+            <em>photography · film · multimedia · generative art</em>
+          </p>
+        </div>
+      </div>
+
+      <div class="hero__strip" role="img" aria-label="Hero image strip from photographic and generative art series">
+        <div class="hero__strip-item">
+          <img src="../img/photos/diary/diary1.jpg"
+               alt="Diary series — film photograph, soft grain, interior light"
+               loading="eager" />
+          <span class="hero__strip-item--caption">Diary</span>
+        </div>
+        <div class="hero__strip-item">
+          <img src="../img/photos/faster/faster1.jpg"
+               alt="Faster series — compressed motion, street photography"
+               loading="eager" />
+          <span class="hero__strip-item--caption">Faster</span>
+        </div>
+        <div class="hero__strip-item">
+          <img src="../img/photos/glitchpr0n/glitch1.png"
+               alt="Glitch art — digital image corruption, generative process"
+               loading="eager" />
+          <span class="hero__strip-item--caption">Glitchpr0n</span>
+        </div>
+      </div>
+
+      <div class="hero__caption-row">
+        <span class="hero__index-note">Fig. 0.1–0.3 — selected works, 2020–present</span>
+        <div class="hero__discipline-row">
+          <span class="hero__discipline hero__discipline--active">Photography</span>
+          <span class="hero__discipline">Film</span>
+          <span class="hero__discipline">Multimedia</span>
+          <span class="hero__discipline">Generative</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       WORK
+       ============================================================ -->
+  <section class="work" id="work" aria-labelledby="work-heading">
+    <div class="section-wrap">
+
+      <div class="section-header">
+        <span class="section-header__number">01</span>
+        <h2 class="section-header__title" id="work-heading">Work</h2>
+        <div class="section-header__rule"></div>
+      </div>
+
+      <!-- Category tabs -->
+      <div class="gallery-tabs" role="tablist" aria-label="Work categories">
+        <button class="gallery-tab active" role="tab" aria-selected="true" data-filter="all">All</button>
+        <button class="gallery-tab" role="tab" aria-selected="false" data-filter="photography">Photography</button>
+        <button class="gallery-tab" role="tab" aria-selected="false" data-filter="film">Film</button>
+        <button class="gallery-tab" role="tab" aria-selected="false" data-filter="multimedia">Multimedia</button>
+        <button class="gallery-tab" role="tab" aria-selected="false" data-filter="generative">Generative</button>
+      </div>
+
+      <!-- Gallery plates -->
+      <div class="gallery-grid" id="gallery-grid">
+
+        <!-- PHOTOGRAPHY — Diary -->
+        <div class="gallery-category-break">
+          <span>Photography — Diary</span>
+          <hr />
+        </div>
+
+        <div class="plate plate--wide plate--tall reveal" data-category="photography"
+             data-title="Diary, No. 1" data-series="Photography / Diary"
+             tabindex="0" role="button" aria-label="Open Diary No. 1">
+          <img src="../img/photos/diary/diary1.jpg"
+               alt="Diary series, photograph 1 — personal document, ambient interior"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Diary</span>
+            <span class="plate__caption-title">Diary, No. 1</span>
+          </div>
+          <span class="plate__num">pl. 1</span>
+        </div>
+
+        <div class="plate plate--med4 reveal" data-category="photography"
+             data-title="Diary, No. 10" data-series="Photography / Diary"
+             tabindex="0" role="button" aria-label="Open Diary No. 10">
+          <img src="../img/photos/diary/diary10.jpg"
+               alt="Diary series, photograph 10"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Diary</span>
+            <span class="plate__caption-title">Diary, No. 10</span>
+          </div>
+          <span class="plate__num">pl. 2</span>
+        </div>
+
+        <div class="plate plate--med4 reveal" data-category="photography"
+             data-title="Diary, No. 11" data-series="Photography / Diary"
+             tabindex="0" role="button" aria-label="Open Diary No. 11">
+          <img src="../img/photos/diary/diary11.jpg"
+               alt="Diary series, photograph 11"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Diary</span>
+            <span class="plate__caption-title">Diary, No. 11</span>
+          </div>
+          <span class="plate__num">pl. 3</span>
+        </div>
+
+        <!-- PHOTOGRAPHY — Faster -->
+        <div class="gallery-category-break">
+          <span>Photography — Faster</span>
+          <hr />
+        </div>
+
+        <div class="plate plate--med reveal" data-category="photography"
+             data-title="Faster, No. 1" data-series="Photography / Faster"
+             tabindex="0" role="button" aria-label="Open Faster No. 1">
+          <img src="../img/photos/faster/faster1.jpg"
+               alt="Faster series, photograph 1 — motion study"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Faster</span>
+            <span class="plate__caption-title">Faster, No. 1</span>
+          </div>
+          <span class="plate__num">pl. 4</span>
+        </div>
+
+        <div class="plate plate--med reveal" data-category="photography"
+             data-title="Faster, No. 10" data-series="Photography / Faster"
+             tabindex="0" role="button" aria-label="Open Faster No. 10">
+          <img src="../img/photos/faster/faster10.jpg"
+               alt="Faster series, photograph 10"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Faster</span>
+            <span class="plate__caption-title">Faster, No. 10</span>
+          </div>
+          <span class="plate__num">pl. 5</span>
+        </div>
+
+        <div class="plate plate--third reveal" data-category="photography"
+             data-title="Faster, No. 11" data-series="Photography / Faster"
+             tabindex="0" role="button" aria-label="Open Faster No. 11">
+          <img src="../img/photos/faster/faster11.jpg"
+               alt="Faster series, photograph 11"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Faster</span>
+            <span class="plate__caption-title">Faster, No. 11</span>
+          </div>
+          <span class="plate__num">pl. 6</span>
+        </div>
+
+        <div class="plate plate--third reveal" data-category="photography"
+             data-title="Faster, No. 12" data-series="Photography / Faster"
+             tabindex="0" role="button" aria-label="Open Faster No. 12">
+          <img src="../img/photos/faster/faster12.jpg"
+               alt="Faster series, photograph 12"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Faster</span>
+            <span class="plate__caption-title">Faster, No. 12</span>
+          </div>
+          <span class="plate__num">pl. 7</span>
+        </div>
+
+        <div class="plate plate--third reveal" data-category="photography"
+             data-title="Slip, No. 1" data-series="Photography / Slip"
+             tabindex="0" role="button" aria-label="Open Slip No. 1">
+          <img src="../img/photos/slip/slip1.jpg"
+               alt="Slip series, photograph 1"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Slip</span>
+            <span class="plate__caption-title">Slip, No. 1</span>
+          </div>
+          <span class="plate__num">pl. 8</span>
+        </div>
+
+        <!-- FILM -->
+        <div class="gallery-category-break">
+          <span>Film / Live</span>
+          <hr />
+        </div>
+
+        <div class="plate plate--wide reveal" data-category="film"
+             data-title="Live, No. 1" data-series="Film / Live"
+             tabindex="0" role="button" aria-label="Open Live No. 1">
+          <img src="../img/photos/live/live1.jpg"
+               alt="Live series, film still 1 — performance documentation"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Film — Live</span>
+            <span class="plate__caption-title">Live, No. 1</span>
+          </div>
+          <span class="plate__num">pl. 9</span>
+        </div>
+
+        <div class="plate plate--med4 reveal" data-category="film"
+             data-title="Live, No. 2" data-series="Film / Live"
+             tabindex="0" role="button" aria-label="Open Live No. 2">
+          <img src="../img/photos/live/live2.jpg"
+               alt="Live series, film still 2"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Film — Live</span>
+            <span class="plate__caption-title">Live, No. 2</span>
+          </div>
+          <span class="plate__num">pl. 10</span>
+        </div>
+
+        <div class="plate plate--med4 reveal" data-category="film"
+             data-title="Live, No. 3" data-series="Film / Live"
+             tabindex="0" role="button" aria-label="Open Live No. 3">
+          <img src="../img/photos/live/live3.jpg"
+               alt="Live series, film still 3"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Film — Live</span>
+            <span class="plate__caption-title">Live, No. 3</span>
+          </div>
+          <span class="plate__num">pl. 11</span>
+        </div>
+
+        <div class="plate plate--med4 reveal" data-category="film"
+             data-title="Live, No. 4" data-series="Film / Live"
+             tabindex="0" role="button" aria-label="Open Live No. 4">
+          <img src="../img/photos/live/live4.jpg"
+               alt="Live series, film still 4"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Film — Live</span>
+            <span class="plate__caption-title">Live, No. 4</span>
+          </div>
+          <span class="plate__num">pl. 12</span>
+        </div>
+
+        <!-- MULTIMEDIA -->
+        <div class="gallery-category-break">
+          <span>Multimedia</span>
+          <hr />
+        </div>
+
+        <div class="plate plate--med4 plate--tall reveal" data-category="multimedia"
+             data-title="Media, No. 1" data-series="Multimedia / Media"
+             tabindex="0" role="button" aria-label="Open Media No. 1">
+          <img src="../img/photos/media/media1.jpg"
+               alt="Media series, multimedia work 1"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Multimedia — Media</span>
+            <span class="plate__caption-title">Media, No. 1</span>
+          </div>
+          <span class="plate__num">pl. 13</span>
+        </div>
+
+        <div class="plate plate--med reveal" data-category="multimedia"
+             data-title="Media, No. 12" data-series="Multimedia / Media"
+             tabindex="0" role="button" aria-label="Open Media No. 12">
+          <img src="../img/photos/media/media12.jpg"
+               alt="Media series, multimedia work 12"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Multimedia — Media</span>
+            <span class="plate__caption-title">Media, No. 12</span>
+          </div>
+          <span class="plate__num">pl. 14</span>
+        </div>
+
+        <div class="plate plate--med reveal" data-category="multimedia"
+             data-title="Media, No. 13" data-series="Multimedia / Media"
+             tabindex="0" role="button" aria-label="Open Media No. 13">
+          <img src="../img/photos/media/media13.jpg"
+               alt="Media series, multimedia work 13"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Multimedia — Media</span>
+            <span class="plate__caption-title">Media, No. 13</span>
+          </div>
+          <span class="plate__num">pl. 15</span>
+        </div>
+
+        <div class="plate plate--med reveal" data-category="multimedia"
+             data-title="Media, No. 14" data-series="Multimedia / Media"
+             tabindex="0" role="button" aria-label="Open Media No. 14">
+          <img src="../img/photos/media/media14.jpg"
+               alt="Media series, multimedia work 14"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Multimedia — Media</span>
+            <span class="plate__caption-title">Media, No. 14</span>
+          </div>
+          <span class="plate__num">pl. 16</span>
+        </div>
+
+        <div class="plate plate--med reveal" data-category="multimedia"
+             data-title="Slip, No. 2" data-series="Photography / Slip"
+             tabindex="0" role="button" aria-label="Open Slip No. 2">
+          <img src="../img/photos/slip/slip2.jpg"
+               alt="Slip series, photograph 2"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Slip</span>
+            <span class="plate__caption-title">Slip, No. 2</span>
+          </div>
+          <span class="plate__num">pl. 17</span>
+        </div>
+
+        <!-- GENERATIVE -->
+        <div class="gallery-category-break">
+          <span>Generative / Glitch</span>
+          <hr />
+        </div>
+
+        <div class="plate plate--med4 reveal" data-category="generative"
+             data-title="Glitchpr0n, No. 1" data-series="Generative / Glitchpr0n"
+             tabindex="0" role="button" aria-label="Open Glitchpr0n No. 1">
+          <img src="../img/photos/glitchpr0n/glitch1.png"
+               alt="Glitchpr0n generative art No. 1 — digital process, image corruption"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Generative — Glitchpr0n</span>
+            <span class="plate__caption-title">Glitchpr0n, No. 1</span>
+          </div>
+          <span class="plate__num">pl. 18</span>
+        </div>
+
+        <div class="plate plate--med4 reveal" data-category="generative"
+             data-title="Glitchpr0n, No. 10" data-series="Generative / Glitchpr0n"
+             tabindex="0" role="button" aria-label="Open Glitchpr0n No. 10">
+          <img src="../img/photos/glitchpr0n/glitch10.png"
+               alt="Glitchpr0n generative art No. 10"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Generative — Glitchpr0n</span>
+            <span class="plate__caption-title">Glitchpr0n, No. 10</span>
+          </div>
+          <span class="plate__num">pl. 19</span>
+        </div>
+
+        <div class="plate plate--med4 reveal" data-category="generative"
+             data-title="Glitchpr0n, No. 11" data-series="Generative / Glitchpr0n"
+             tabindex="0" role="button" aria-label="Open Glitchpr0n No. 11">
+          <img src="../img/photos/glitchpr0n/glitch11.png"
+               alt="Glitchpr0n generative art No. 11"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Generative — Glitchpr0n</span>
+            <span class="plate__caption-title">Glitchpr0n, No. 11</span>
+          </div>
+          <span class="plate__num">pl. 20</span>
+        </div>
+
+        <div class="plate plate--wide plate--tall reveal" data-category="generative"
+             data-title="Glitchpr0n, No. 12" data-series="Generative / Glitchpr0n"
+             tabindex="0" role="button" aria-label="Open Glitchpr0n No. 12">
+          <img src="../img/photos/glitchpr0n/glitch12.png"
+               alt="Glitchpr0n generative art No. 12 — full-bleed distortion composition"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Generative — Glitchpr0n</span>
+            <span class="plate__caption-title">Glitchpr0n, No. 12</span>
+          </div>
+          <span class="plate__num">pl. 21</span>
+        </div>
+
+        <div class="plate plate--med4 plate--tall reveal" data-category="photography"
+             data-title="Slip, No. 3" data-series="Photography / Slip"
+             tabindex="0" role="button" aria-label="Open Slip No. 3">
+          <img src="../img/photos/slip/slip3.jpg"
+               alt="Slip series, photograph 3"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Slip</span>
+            <span class="plate__caption-title">Slip, No. 3</span>
+          </div>
+          <span class="plate__num">pl. 22</span>
+        </div>
+
+        <div class="plate plate--med4 reveal" data-category="photography"
+             data-title="Slip, No. 4" data-series="Photography / Slip"
+             tabindex="0" role="button" aria-label="Open Slip No. 4">
+          <img src="../img/photos/slip/slip4.jpg"
+               alt="Slip series, photograph 4"
+               loading="lazy" />
+          <div class="plate__caption">
+            <span class="plate__caption-label">Photography — Slip</span>
+            <span class="plate__caption-title">Slip, No. 4</span>
+          </div>
+          <span class="plate__num">pl. 23</span>
+        </div>
+
+      </div>
+      <!-- /gallery-grid -->
+
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox__close" id="lightbox-close" aria-label="Close image viewer">Close ×</button>
+    <img class="lightbox__img" id="lightbox-img" src="" alt="" />
+    <div class="lightbox__meta">
+      <span class="lightbox__series" id="lightbox-series"></span>
+      <span class="lightbox__title" id="lightbox-title"></span>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       STUDIES
+       ============================================================ -->
+  <section class="studies" id="studies" aria-labelledby="studies-heading">
+    <div class="section-wrap">
+
+      <div class="section-header rule-top rule-top--heavy">
+        <span class="section-header__number">02</span>
+        <h2 class="section-header__title" id="studies-heading">Studies</h2>
+        <div class="section-header__rule"></div>
+      </div>
+
+      <div class="studies__intro">
+        <p>A running index of technique studies, process notes, and art-historical inquiries — built in public. Each study documents a method, a reference, or an experiment from the studio.</p>
+      </div>
+
+      <div class="studies-index">
+
+        <div class="study-card reveal">
+          <span class="study-card__number">Study — 001</span>
+          <span class="study-card__tag">Technique</span>
+          <h3 class="study-card__title">On the Grain: Film Emulsion and the Digital Surrogate</h3>
+          <p class="study-card__dek">How film grain functions aesthetically vs. noise reduction algorithms, and why the imperfection is the point — a study across Kodak T-Max, Tri-X, and their digital proxies.</p>
+          <p class="study-card__meta">Medium — photography · Duration — ongoing</p>
+          <span class="study-card__cta">Read study ↗</span>
+        </div>
+
+        <div class="study-card reveal">
+          <span class="study-card__number">Study — 002</span>
+          <span class="study-card__tag">Art History</span>
+          <h3 class="study-card__title">Databending as Descent: Glitch Art and the Tradition of Ruin</h3>
+          <p class="study-card__dek">Glitch aesthetics in conversation with the ruin painters — Piranesi, Hubert Robert — and the Romantic appetite for decay. What does it mean to corrupt an image deliberately?</p>
+          <p class="study-card__meta">Medium — generative · Duration — ongoing</p>
+          <span class="study-card__cta">Read study ↗</span>
+        </div>
+
+        <div class="study-card reveal">
+          <span class="study-card__number">Study — 003</span>
+          <span class="study-card__tag">Process</span>
+          <h3 class="study-card__title">Wenders and the Static Frame: Duration as Subject in Road Film</h3>
+          <p class="study-card__dek">Notes on the use of extended static takes in <em>Paris, Texas</em> and <em>Kings of the Road</em> — and how stillness under motion creates a phenomenology of waiting that mirrors desert photography.</p>
+          <p class="study-card__meta">Medium — film / writing · Duration — ongoing</p>
+          <span class="study-card__cta">Read study ↗</span>
+        </div>
+
+      </div>
+
+      <div class="studies-stream-note">
+        <span>Stream</span>
+        <strong>New studies published irregularly — subscribe via email or follow on Instagram for updates.</strong>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SOUND / WORDS
+       ============================================================ -->
+  <section class="pillars" id="sound" aria-labelledby="pillars-heading">
+    <div class="section-wrap">
+
+      <div class="section-header rule-top rule-top--heavy">
+        <span class="section-header__number">03</span>
+        <h2 class="section-header__title" id="pillars-heading">Sound / Words</h2>
+        <div class="section-header__rule"></div>
+      </div>
+
+      <div class="pillars__grid">
+
+        <div class="pillar reveal">
+          <div class="pillar__glyph" aria-hidden="true">♩</div>
+          <p class="pillar__label">Pillar — Sound</p>
+          <h3 class="pillar__title">Music &amp; Audio</h3>
+          <p class="pillar__desc">Composed, recorded, and produced work spanning electronic texture, acoustic instrumentation, and noise. Influenced by the generative systems of Eno, the granular worlds of Autechre, and the signal-processing rigour of Aphex Twin.</p>
+          <div class="pillar__works">
+            <div class="pillar__work-item">
+              <span class="pillar__work-name">Untitled Drone Study I</span>
+              <span class="pillar__work-year">2024</span>
+            </div>
+            <div class="pillar__work-item">
+              <span class="pillar__work-name">Field Recording Sequence</span>
+              <span class="pillar__work-year">2023</span>
+            </div>
+            <div class="pillar__work-item">
+              <span class="pillar__work-name">Score for Live Set</span>
+              <span class="pillar__work-year">2022</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pillar reveal">
+          <div class="pillar__glyph" aria-hidden="true">¶</div>
+          <p class="pillar__label">Pillar — Words</p>
+          <h3 class="pillar__title">Writing</h3>
+          <p class="pillar__desc">Academic and creative writing: art criticism, personal essay, and fiction. Informed by the stream-of-consciousness interiority of Joyce and Woolf, and by a scholarly engagement with image theory, media studies, and cultural history.</p>
+          <div class="pillar__works">
+            <div class="pillar__work-item">
+              <span class="pillar__work-name">The Photograph as Index</span>
+              <span class="pillar__work-year">2025</span>
+            </div>
+            <div class="pillar__work-item">
+              <span class="pillar__work-name">On Silence and Sound Design</span>
+              <span class="pillar__work-year">2024</span>
+            </div>
+            <div class="pillar__work-item">
+              <span class="pillar__work-name">Glitch as Critique</span>
+              <span class="pillar__work-year">2023</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT + CONTACT
+       ============================================================ -->
+  <section class="about" id="about" aria-labelledby="about-heading">
+    <div class="section-wrap">
+
+      <div class="section-header rule-top rule-top--heavy">
+        <span class="section-header__number">04</span>
+        <h2 class="section-header__title" id="about-heading">About</h2>
+        <div class="section-header__rule"></div>
+      </div>
+
+      <div class="about__grid">
+
+        <div class="about__bio reveal">
+          <p><strong>Anthony Padavano</strong> is an artist and academic working across photography, film, multimedia installation, generative and glitch art, sound composition, and writing. His practice is rooted in the tension between structure and accident — in the way a deliberate system (a camera, an algorithm, a score) encounters the world and is transformed by it.</p>
+          <p>He holds academic appointments in the humanities, where his scholarly work interrogates image theory, media history, and the phenomenology of recorded experience. His studio practice runs alongside and through that scholarship: the studies published here are neither purely academic nor purely artistic — they are both.</p>
+          <p>He is based in the United States. His photographic and multimedia work is distributed across the series documented in this portfolio: <em>Diary</em>, <em>Faster</em>, <em>Media</em>, <em>Live</em>, <em>Slip</em>, and <em>Glitchpr0n</em>. All four pillars — Vision, Sound, Words, and the ongoing inquiry of Studies — constitute a single, continuous project.</p>
+        </div>
+
+        <!-- Marginalia -->
+        <aside class="about__marginalia reveal" aria-label="Contact and links">
+
+          <div class="marginalia-item">
+            <p class="marginalia-item__head">Connect</p>
+            <p class="marginalia-item__body">
+              Follow the work on Instagram and reach out directly by
+              <a href="mailto:padavano.anthony@gmail.com" aria-label="Email Anthony Padavano">email</a>.
+              Inquiries regarding commissions, collaborations, exhibitions, and academic correspondence are welcome.
+            </p>
+          </div>
+
+          <div class="marginalia-item">
+            <p class="marginalia-item__head">Location</p>
+            <p class="marginalia-item__body">United States — available for remote and international projects.</p>
+          </div>
+
+          <div class="marginalia-item">
+            <p class="marginalia-item__head">Disciplines</p>
+            <p class="marginalia-item__body">Photography · Film · Multimedia · Generative Art · Sound · Writing · Art History</p>
+          </div>
+
+          <div class="marginalia-item">
+            <p class="marginalia-item__head">Email</p>
+            <p class="marginalia-item__body">
+              <a href="mailto:padavano.anthony@gmail.com">padavano.anthony@gmail.com</a>
+            </p>
+          </div>
+
+        </aside>
+
+      </div>
+
+      <!-- Connect row -->
+      <div class="connect">
+        <p class="connect__label">Follow / Connect</p>
+        <div class="connect__links">
+          <a href="https://instagram.com/" class="connect-link connect-link--primary"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Follow on Instagram (opens in new tab)">
+            Instagram ↗
+          </a>
+          <a href="mailto:padavano.anthony@gmail.com" class="connect-link"
+             aria-label="Send email to Anthony Padavano">
+            Email
+          </a>
+          <a href="#studies" class="connect-link"
+             aria-label="Read the Studies stream">
+            Studies Stream
+          </a>
+          <a href="#work" class="connect-link"
+             aria-label="View the full portfolio">
+            Portfolio
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer__inner">
+      <span class="site-footer__mark">ET CETER4 — Anthony Padavano</span>
+      <span class="site-footer__copy">&copy; 2026 — Composer of sounds / words / images</span>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+       ============================================================ -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── Scroll reveal ──────────────────────────────────── */
+      var revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              obs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach(function (el) { obs.observe(el); });
+      } else {
+        revealEls.forEach(function (el) { el.classList.add('visible'); });
+      }
+
+      /* ── Lightbox ───────────────────────────────────────── */
+      var lb      = document.getElementById('lightbox');
+      var lbImg   = document.getElementById('lightbox-img');
+      var lbSer   = document.getElementById('lightbox-series');
+      var lbTitle = document.getElementById('lightbox-title');
+      var lbClose = document.getElementById('lightbox-close');
+
+      function openLightbox(img, series, title) {
+        lbImg.src   = img;
+        lbImg.alt   = title;
+        lbSer.textContent   = series;
+        lbTitle.textContent = title;
+        lb.classList.add('open');
+        lb.focus();
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lb.classList.remove('open');
+        lbImg.src = '';
+        document.body.style.overflow = '';
+      }
+
+      var plates = document.querySelectorAll('.plate');
+      plates.forEach(function (plate) {
+        function activate() {
+          var img    = plate.querySelector('img');
+          var title  = plate.dataset.title  || '';
+          var series = plate.dataset.series || '';
+          if (img) openLightbox(img.src, series, title);
+        }
+        plate.addEventListener('click', activate);
+        plate.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+        });
+      });
+
+      lbClose.addEventListener('click', closeLightbox);
+      lb.addEventListener('click', function (e) {
+        if (e.target === lb) closeLightbox();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && lb.classList.contains('open')) closeLightbox();
+      });
+
+      /* ── Gallery tabs (filter) ──────────────────────────── */
+      var tabs       = document.querySelectorAll('.gallery-tab');
+      var allPlates  = document.querySelectorAll('.plate');
+      var catBreaks  = document.querySelectorAll('.gallery-category-break');
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          tabs.forEach(function (t) {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+
+          var filter = tab.dataset.filter;
+
+          allPlates.forEach(function (plate) {
+            if (filter === 'all' || plate.dataset.category === filter) {
+              plate.style.display = '';
+            } else {
+              plate.style.display = 'none';
+            }
+          });
+
+          /* hide category-break rows whose category is filtered out */
+          catBreaks.forEach(function (br) {
+            if (filter === 'all') {
+              br.style.display = '';
+            } else {
+              /* find first visible plate after this break */
+              var next = br.nextElementSibling;
+              var found = false;
+              while (next && !next.classList.contains('gallery-category-break')) {
+                if (next.classList.contains('plate') && next.style.display !== 'none') {
+                  found = true; break;
+                }
+                next = next.nextElementSibling;
+              }
+              br.style.display = found ? '' : 'none';
+            }
+          });
+        });
+      });
+
+    }());
+  </script>
+
+</body>
+</html>

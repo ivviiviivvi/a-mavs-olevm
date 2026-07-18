@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ET CETER4 — Anthony Padavano. Composer of sounds / words / images. Photography, film, multimedia, generative art.">
+  <title>ET CETER4 — Anthony Padavano</title>
+  <style>
+    /* ── RESET + TOKENS ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0a0a0b;
+      --bg-2:         #111114;
+      --bg-3:         #16161a;
+      --surface:      #1c1c21;
+      --surface-2:    #252530;
+      --border:       rgba(255,255,255,0.08);
+      --border-active:rgba(255,255,255,0.22);
+
+      --fg:           #e8e8ec;
+      --fg-2:         #9898a8;
+      --fg-3:         #5a5a6a;
+
+      --accent:       #c8f542;   /* signal green — terminal / oscilloscope */
+      --accent-dim:   rgba(200,245,66,0.18);
+      --accent-glow:  rgba(200,245,66,0.06);
+
+      --red:          #ff4c38;
+      --blue:         #3b82f6;
+
+      --font-sans:    "Helvetica Neue", Arial, system-ui, sans-serif;
+      --font-mono:    "SF Mono", ui-monospace, Menlo, "Cascadia Mono", monospace;
+      --font-serif:   Georgia, "Times New Roman", serif;
+
+      --space-xs:     0.375rem;
+      --space-s:      0.75rem;
+      --space-m:      1.25rem;
+      --space-l:      2.5rem;
+      --space-xl:     4rem;
+      --space-2xl:    7rem;
+
+      --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-in-out:  cubic-bezier(0.37, 0, 0.63, 1);
+
+      --radius:       2px;
+      --radius-m:     4px;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body { overflow-x: hidden; }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: var(--radius);
+    }
+
+    /* ── CANVAS BACKGROUND ──────────────────────────────────────── */
+    #signal-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.55;
+    }
+
+    /* ── LAYOUT SKELETON ────────────────────────────────────────── */
+    .content-layer {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 var(--space-m);
+    }
+
+    @media (min-width: 640px)  { .container { padding: 0 var(--space-l); } }
+    @media (min-width: 1024px) { .container { padding: 0 var(--space-xl); } }
+
+    section { padding: var(--space-2xl) 0; }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: var(--space-s);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-l);
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── NAV ────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: var(--space-m) 0;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.4s, background 0.4s;
+      will-change: background;
+    }
+
+    nav.scrolled {
+      background: rgba(10,10,11,0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-color: var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 var(--space-m);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-m);
+    }
+
+    @media (min-width: 640px)  { .nav-inner { padding: 0 var(--space-l); } }
+    @media (min-width: 1024px) { .nav-inner { padding: 0 var(--space-xl); } }
+
+    .wordmark {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--fg);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .wordmark span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-l);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg-2);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--fg); }
+
+    @media (max-width: 639px) {
+      .nav-links { display: none; }
+    }
+
+    /* ── HERO ───────────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: var(--space-2xl);
+      overflow: hidden;
+    }
+
+    .hero-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200,245,66,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,245,66,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    .hero-image-strip {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3px;
+      opacity: 0.22;
+    }
+
+    .hero-image-strip figure {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .hero-image-strip img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.6) contrast(1.1);
+      transform: scale(1.04);
+      transition: transform 12s var(--ease-in-out);
+    }
+
+    .hero-image-strip figure:hover img {
+      transform: scale(1.0);
+    }
+
+    /* dark vignette over strip */
+    .hero-image-strip::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, var(--bg) 0%, transparent 30%, transparent 60%, var(--bg) 100%),
+        linear-gradient(to right, var(--bg) 0%, transparent 15%, transparent 85%, var(--bg) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 var(--space-m);
+      max-width: 1240px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (min-width: 640px)  { .hero-content { padding: 0 var(--space-l); } }
+    @media (min-width: 1024px) { .hero-content { padding: 0 var(--space-xl); } }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-m);
+      display: flex;
+      align-items: center;
+      gap: var(--space-s);
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-eyebrow::before { animation: none; }
+    }
+
+    .hero-name {
+      font-family: var(--font-sans);
+      font-size: clamp(3rem, 10vw, 8.5rem);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      color: var(--fg);
+      margin-bottom: var(--space-m);
+    }
+
+    .hero-name em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-tagline {
+      font-family: var(--font-serif);
+      font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+      font-style: italic;
+      color: var(--fg-2);
+      margin-bottom: var(--space-l);
+      max-width: 34ch;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-s);
+      align-items: center;
+    }
+
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      color: var(--fg-3);
+      border-radius: var(--radius);
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .hero-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+    .hero-cta:focus-visible { outline-color: var(--fg); }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: var(--space-l);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      z-index: 2;
+    }
+
+    .hero-scroll-hint span {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+    }
+
+    .scroll-bar {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollBar 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollBar {
+      0%   { opacity: 0; transform: scaleY(0); transform-origin: top; }
+      50%  { opacity: 1; transform: scaleY(1); transform-origin: top; }
+      100% { opacity: 0; transform: scaleY(1); transform-origin: bottom; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-bar { animation: none; opacity: 1; }
+    }
+
+    /* ── WORK ───────────────────────────────────────────────────── */
+    #work { background: var(--bg-2); }
+
+    .work-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-s);
+      margin-bottom: var(--space-l);
+    }
+
+    .filter-btn {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--fg-3);
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--border-active);
+      color: var(--fg);
+    }
+
+    .filter-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    /* masonry-style multi-column grid */
+    .gallery {
+      columns: 2;
+      column-gap: 4px;
+    }
+
+    @media (min-width: 640px)  { .gallery { columns: 3; } }
+    @media (min-width: 1024px) { .gallery { columns: 4; column-gap: 6px; } }
+
+    .gallery-item {
+      position: relative;
+      break-inside: avoid;
+      overflow: hidden;
+      margin-bottom: 4px;
+      cursor: pointer;
+      background: var(--surface);
+    }
+
+    @media (min-width: 1024px) { .gallery-item { margin-bottom: 6px; } }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease-out), filter 0.4s;
+      filter: saturate(0.85);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.04);
+      filter: saturate(1.1);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-s);
+    }
+
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    .gallery-overlay-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .gallery-cat {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .gallery-expand-icon {
+      width: 18px;
+      height: 18px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* highlighted wide items */
+    .gallery-item.wide {
+      /* can't do spanning in CSS columns cleanly; use height trick */
+    }
+
+    /* ── LIGHTBOX ───────────────────────────────────────────────── */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(5,5,7,0.96);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    #lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #lightbox img {
+      max-width: 92vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border: 1px solid var(--border);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: var(--space-m);
+      right: var(--space-m);
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--fg-2);
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      border-radius: var(--radius);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .lightbox-close:hover { border-color: var(--border-active); color: var(--fg); }
+
+    .lightbox-meta {
+      position: absolute;
+      bottom: var(--space-l);
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      white-space: nowrap;
+    }
+
+    .lightbox-meta em {
+      font-style: normal;
+      color: var(--accent);
+      margin-right: 6px;
+    }
+
+    /* ── STUDIES ────────────────────────────────────────────────── */
+    #studies { background: var(--bg); }
+
+    .studies-intro {
+      max-width: 52ch;
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--fg-2);
+      margin-bottom: var(--space-xl);
+      line-height: 1.7;
+    }
+
+    .studies-grid {
+      display: grid;
+      gap: 1px;
+      background: var(--border);
+    }
+
+    @media (min-width: 640px)  { .studies-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .studies-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .study-card {
+      background: var(--bg);
+      padding: var(--space-l);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-s);
+      transition: background 0.3s;
+      cursor: default;
+    }
+
+    .study-card:hover { background: var(--bg-3); }
+
+    .study-index {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: var(--fg-3);
+    }
+
+    .study-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid currentColor;
+      padding: 2px 8px;
+      border-radius: var(--radius);
+      align-self: flex-start;
+    }
+
+    .study-title {
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--fg);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .study-dek {
+      font-size: 0.875rem;
+      color: var(--fg-2);
+      line-height: 1.55;
+    }
+
+    .study-date {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: var(--fg-3);
+      margin-top: auto;
+      padding-top: var(--space-s);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── SOUND + WORDS ──────────────────────────────────────────── */
+    #pillars {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pillars-grid {
+      display: grid;
+      gap: 1px;
+      background: var(--border);
+    }
+
+    @media (min-width: 640px) { .pillars-grid { grid-template-columns: 1fr 1fr; } }
+
+    .pillar-card {
+      background: var(--bg-2);
+      padding: var(--space-l);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-m);
+      transition: background 0.3s;
+    }
+
+    .pillar-card:hover { background: var(--bg-3); }
+
+    .pillar-icon-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-s);
+    }
+
+    .pillar-glyph {
+      font-family: var(--font-mono);
+      font-size: 1.4rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .pillar-heading {
+      font-family: var(--font-sans);
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+
+    .pillar-body {
+      font-size: 0.9rem;
+      color: var(--fg-2);
+      line-height: 1.6;
+    }
+
+    .pillar-works {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .pillar-works li {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: var(--fg-3);
+    }
+
+    .pillar-works li::before {
+      content: '—';
+      font-family: var(--font-mono);
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── ABOUT + CONTACT ────────────────────────────────────────── */
+    #about { background: var(--bg); }
+
+    .about-grid {
+      display: grid;
+      gap: var(--space-2xl);
+      align-items: start;
+    }
+
+    @media (min-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-xl);
+      }
+    }
+
+    .about-text h2 {
+      font-family: var(--font-sans);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      line-height: 1.15;
+      margin-bottom: var(--space-m);
+    }
+
+    .about-text p {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--fg-2);
+      max-width: 50ch;
+    }
+
+    .about-text p + p { margin-top: var(--space-m); }
+
+    .contact-panel {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-m);
+    }
+
+    .contact-heading {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-s);
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: var(--space-m);
+      padding: var(--space-m);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-m);
+      color: var(--fg-2);
+      font-size: 0.875rem;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+
+    .contact-link:hover {
+      border-color: var(--border-active);
+      color: var(--fg);
+      background: var(--surface);
+    }
+
+    .contact-link-icon {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .contact-link-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .contact-link-label strong {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--fg);
+    }
+
+    .contact-link-label span {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: var(--space-l) 0;
+      background: var(--bg);
+    }
+
+    .footer-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 var(--space-m);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-m);
+    }
+
+    @media (min-width: 640px)  { .footer-inner { padding: 0 var(--space-l); } }
+    @media (min-width: 1024px) { .footer-inner { padding: 0 var(--space-xl); } }
+
+    .footer-wordmark {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+    }
+
+    .footer-wordmark span { color: var(--accent); }
+
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: var(--fg-3);
+    }
+
+    /* ── DIVIDER LINE ────────────────────────────────────────────── */
+    .section-rule {
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+
+    /* ── GLITCH ACCENT (subtle, decoration only) ─────────────────── */
+    .glitch-word {
+      position: relative;
+      display: inline-block;
+    }
+
+    .glitch-word::before,
+    .glitch-word::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      clip: rect(0,0,0,0);
+    }
+
+    .glitch-word::before {
+      left: 2px;
+      color: var(--red);
+      animation: glitch-a 5s infinite steps(1);
+    }
+
+    .glitch-word::after {
+      left: -2px;
+      color: var(--blue);
+      animation: glitch-b 5s infinite steps(1);
+    }
+
+    @keyframes glitch-a {
+      0%, 92%, 100% { clip: rect(0,0,0,0); }
+      93%  { clip: rect(12px, 9999px, 24px, 0); }
+      94%  { clip: rect(60px, 9999px, 70px, 0); }
+      95%  { clip: rect(0,0,0,0); }
+    }
+
+    @keyframes glitch-b {
+      0%, 90%, 100% { clip: rect(0,0,0,0); }
+      91% { clip: rect(32px, 9999px, 42px, 0); }
+      92% { clip: rect(80px, 9999px, 86px, 0); }
+      93% { clip: rect(0,0,0,0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .glitch-word::before,
+      .glitch-word::after { display: none; }
+    }
+
+    /* ── FADE IN ON SCROLL ──────────────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ── SIGNAL TICKER ──────────────────────────────────────────── */
+    .signal-ticker {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-3);
+      padding: 10px 0;
+    }
+
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker 28s linear infinite;
+    }
+
+    .ticker-item {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      padding: 0 var(--space-l);
+      white-space: nowrap;
+    }
+
+    .ticker-item em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-track { animation: none; }
+    }
+
+    /* ── UTILITY ────────────────────────────────────────────────── */
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ LIVE GENERATIVE CANVAS ══════════════════════════════════ -->
+  <canvas id="signal-canvas" aria-hidden="true"></canvas>
+
+  <!-- ══ NAV ══════════════════════════════════════════════════════ -->
+  <nav id="main-nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <a href="#hero" class="wordmark" aria-label="ET CETER4 — Home">ET CETER<span>4</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#studies">Studies</a></li>
+        <li><a href="#pillars">Sound / Words</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="content-layer">
+
+    <!-- ══ HERO ══════════════════════════════════════════════════ -->
+    <section id="hero" aria-label="Introduction">
+
+      <div class="hero-grid-overlay" aria-hidden="true"></div>
+
+      <div class="hero-image-strip" aria-hidden="true">
+        <figure>
+          <img src="../img/photos/glitchpr0n/glitch1.png" alt="">
+        </figure>
+        <figure>
+          <img src="../img/photos/faster/faster1.jpg" alt="">
+        </figure>
+        <figure>
+          <img src="../img/photos/media/media1.jpg" alt="">
+        </figure>
+      </div>
+
+      <div class="hero-content">
+        <p class="hero-eyebrow" aria-label="Signal active">Signal / active</p>
+
+        <h1 class="hero-name">
+          <span class="glitch-word" data-text="ET">ET</span>&thinsp;<span class="glitch-word" data-text="CETER4">CETER<em>4</em></span>
+        </h1>
+
+        <p class="hero-tagline">composer of sounds&ensp;/&ensp;words&ensp;/&ensp;images</p>
+
+        <div class="hero-meta">
+          <span class="hero-tag">Photography</span>
+          <span class="hero-tag">Film &amp; Video</span>
+          <span class="hero-tag">Multimedia</span>
+          <span class="hero-tag">Generative Art</span>
+          <span class="hero-tag">Sound</span>
+          <a href="#work" class="hero-cta">
+            View Work
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2.5 6h7M6 2.5L9.5 6 6 9.5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-scroll-hint" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="scroll-bar"></div>
+      </div>
+
+    </section>
+
+    <!-- signal ticker -->
+    <div class="signal-ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <!-- doubled for seamless loop -->
+        <span class="ticker-item"><em>Photography</em> — documentary, diary, portraiture</span>
+        <span class="ticker-item"><em>Film</em> — short form, experimental, live capture</span>
+        <span class="ticker-item"><em>Generative</em> — glitch, signal, process-based systems</span>
+        <span class="ticker-item"><em>Sound</em> — composition, ambient, electronic</span>
+        <span class="ticker-item"><em>Words</em> — criticism, theory, lyric essay</span>
+        <span class="ticker-item"><em>Studies</em> — technique, art-history, process notes</span>
+        <span class="ticker-item"><em>Photography</em> — documentary, diary, portraiture</span>
+        <span class="ticker-item"><em>Film</em> — short form, experimental, live capture</span>
+        <span class="ticker-item"><em>Generative</em> — glitch, signal, process-based systems</span>
+        <span class="ticker-item"><em>Sound</em> — composition, ambient, electronic</span>
+        <span class="ticker-item"><em>Words</em> — criticism, theory, lyric essay</span>
+        <span class="ticker-item"><em>Studies</em> — technique, art-history, process notes</span>
+      </div>
+    </div>
+
+    <!-- ══ WORK ════════════════════════════════════════════════════ -->
+    <section id="work" aria-labelledby="work-heading">
+      <div class="container">
+        <p class="section-label" aria-hidden="true">Work</p>
+        <h2 id="work-heading" class="sr-only">Selected Work</h2>
+
+        <div class="work-filters" role="group" aria-label="Filter by category">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="photography">Photography</button>
+          <button class="filter-btn" data-filter="film">Film</button>
+          <button class="filter-btn" data-filter="multimedia">Multimedia</button>
+          <button class="filter-btn" data-filter="generative">Generative</button>
+        </div>
+
+        <div class="gallery" id="gallery" role="list">
+
+          <!-- GENERATIVE / GLITCH — shown first to anchor visual identity -->
+          <div class="gallery-item fade-in" data-cat="generative" role="listitem">
+            <img src="../img/photos/glitchpr0n/glitch1.png"
+                 alt="Generative glitch composition 1"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Generative</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/diary/diary1.jpg"
+                 alt="Diary series — photograph 1"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="film" role="listitem">
+            <img src="../img/photos/faster/faster1.jpg"
+                 alt="Faster series — film still 1"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Film</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="multimedia" role="listitem">
+            <img src="../img/photos/media/media1.jpg"
+                 alt="Media series — multimedia work 1"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Multimedia</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="generative" role="listitem">
+            <img src="../img/photos/glitchpr0n/glitch10.png"
+                 alt="Generative glitch composition 10"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Generative</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/live/live1.jpg"
+                 alt="Live series — photograph 1"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="film" role="listitem">
+            <img src="../img/photos/faster/faster10.jpg"
+                 alt="Faster series — film still 10"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Film</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="generative" role="listitem">
+            <img src="../img/photos/glitchpr0n/glitch11.png"
+                 alt="Generative glitch composition 11"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Generative</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/slip/slip1.jpg"
+                 alt="Slip series — photograph 1"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="multimedia" role="listitem">
+            <img src="../img/photos/media/media12.jpg"
+                 alt="Media series — multimedia work 12"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Multimedia</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="film" role="listitem">
+            <img src="../img/photos/faster/faster11.jpg"
+                 alt="Faster series — film still 11"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Film</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="generative" role="listitem">
+            <img src="../img/photos/glitchpr0n/glitch12.png"
+                 alt="Generative glitch composition 12"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Generative</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/live/live2.jpg"
+                 alt="Live series — photograph 2"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/diary/diary10.jpg"
+                 alt="Diary series — photograph 10"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="multimedia" role="listitem">
+            <img src="../img/photos/media/media13.jpg"
+                 alt="Media series — multimedia work 13"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Multimedia</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="film" role="listitem">
+            <img src="../img/photos/faster/faster12.jpg"
+                 alt="Faster series — film still 12"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Film</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/live/live3.jpg"
+                 alt="Live series — photograph 3"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/slip/slip2.jpg"
+                 alt="Slip series — photograph 2"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="multimedia" role="listitem">
+            <img src="../img/photos/media/media14.jpg"
+                 alt="Media series — multimedia work 14"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Multimedia</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/diary/diary11.jpg"
+                 alt="Diary series — photograph 11"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/live/live4.jpg"
+                 alt="Live series — photograph 4"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/slip/slip3.jpg"
+                 alt="Slip series — photograph 3"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item fade-in" data-cat="photography" role="listitem">
+            <img src="../img/photos/slip/slip4.jpg"
+                 alt="Slip series — photograph 4"
+                 loading="lazy">
+            <div class="gallery-overlay" aria-hidden="true">
+              <div class="gallery-overlay-content">
+                <span class="gallery-cat">Photography</span>
+                <svg class="gallery-expand-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2h5v5M7 16H2v-5M16 2l-6 6M2 16l6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /gallery -->
+      </div>
+    </section>
+
+    <!-- ══ LIGHTBOX ════════════════════════════════════════════════ -->
+    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <button class="lightbox-close" id="lightbox-close" aria-label="Close image viewer">&#x2715;</button>
+      <img src="" alt="" id="lightbox-img">
+      <p class="lightbox-meta" id="lightbox-meta"></p>
+    </div>
+
+    <!-- ══ STUDIES ══════════════════════════════════════════════════ -->
+    <section id="studies" aria-labelledby="studies-heading">
+      <div class="container">
+        <p class="section-label" aria-hidden="true">Studies</p>
+        <h2 id="studies-heading" class="sr-only">Studies &amp; Process</h2>
+
+        <p class="studies-intro fade-in">
+          A build-in-public stream of technique notes, art-historical close readings,
+          and process dispatches — what the work looks like before it becomes the work.
+        </p>
+
+        <div class="studies-grid">
+
+          <article class="study-card fade-in">
+            <span class="study-index">001</span>
+            <span class="study-tag">Technique</span>
+            <h3 class="study-title">On the grain of the image: analogue noise as compositional material</h3>
+            <p class="study-dek">
+              How photographic grain migrates from defect to language — a close reading of Eggleston,
+              Arbus, and the shift from error-correction to error-cultivation in digital workflows.
+            </p>
+            <p class="study-date">In progress — 2026</p>
+          </article>
+
+          <article class="study-card fade-in">
+            <span class="study-index">002</span>
+            <span class="study-tag">Art History</span>
+            <h3 class="study-title">Signal decay: glitch aesthetics from Nam June Paik to datamoshing</h3>
+            <p class="study-dek">
+              Tracing the lineage of intentional signal corruption from early video art through
+              circuit-bending into the codec-level interventions of contemporary glitch practice.
+            </p>
+            <p class="study-date">Draft — 2026</p>
+          </article>
+
+          <article class="study-card fade-in">
+            <span class="study-index">003</span>
+            <span class="study-tag">Process</span>
+            <h3 class="study-title">Ambient cinema: duration, boredom, and the still moving image</h3>
+            <p class="study-dek">
+              Notes toward a practice informed by Tarkovsky's "sculpting in time," Wenders's road
+              films, and Eno's generative music — treating the moving image as sustained atmosphere.
+            </p>
+            <p class="study-date">Notes — 2026</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SOUND + WORDS ══════════════════════════════════════════ -->
+    <section id="pillars" aria-labelledby="pillars-heading">
+      <div class="container">
+        <p class="section-label" aria-hidden="true">Sound / Words</p>
+        <h2 id="pillars-heading" class="sr-only">Sound and Words</h2>
+
+        <div class="pillars-grid">
+
+          <div class="pillar-card fade-in">
+            <div class="pillar-icon-row">
+              <span class="pillar-glyph" aria-hidden="true">&#9880;</span>
+              <h3 class="pillar-heading">Sound</h3>
+            </div>
+            <p class="pillar-body">
+              Electronic composition, ambient texture, and experimental sound design. Work that
+              lives in the territory between Eno's generative systems, Autechre's algorithmic
+              rhythm, and the scored silences of acoustic practice.
+            </p>
+            <ul class="pillar-works" aria-label="Sound works">
+              <li>Ambient / drone compositions</li>
+              <li>Electronic &amp; generative pieces</li>
+              <li>Field recordings &amp; sound design</li>
+              <li>Collaborative sonic work</li>
+            </ul>
+          </div>
+
+          <div class="pillar-card fade-in">
+            <div class="pillar-icon-row">
+              <span class="pillar-glyph" aria-hidden="true">&#9998;</span>
+              <h3 class="pillar-heading">Words</h3>
+            </div>
+            <p class="pillar-body">
+              Art criticism, lyric essay, and theory in conversation with practice. Writing that
+              refuses the separation between making and thinking — in the tradition of Woolf,
+              Joyce, and the artist-critic as a single figure.
+            </p>
+            <ul class="pillar-works" aria-label="Writing works">
+              <li>Art criticism &amp; reviews</li>
+              <li>Lyric &amp; experimental essays</li>
+              <li>Academic writing &amp; research</li>
+              <li>Artist statements &amp; process notes</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ABOUT + CONTACT ════════════════════════════════════════ -->
+    <section id="about" aria-labelledby="about-heading">
+      <div class="container">
+        <p class="section-label" aria-hidden="true">About</p>
+
+        <div class="about-grid">
+
+          <div class="about-text fade-in">
+            <h2 id="about-heading">Anthony<br>Padavano</h2>
+            <p>
+              Anthony Padavano is an artist and academic whose practice moves between photography,
+              film and video, generative and glitch art, sound composition, and critical writing.
+              His work is concerned with the edges of systems — where signal becomes noise,
+              where the documentary eye slips into abstraction, where technology reveals the
+              grain of its own construction.
+            </p>
+            <p>
+              Working across analog and digital registers, his image-making draws on a lineage that
+              includes structural film, ambient music, and the literary modernism of Joyce and Woolf.
+              The result is a practice organized less by medium than by sensibility: dense, precise,
+              warm, and in sustained conversation with its antecedents.
+            </p>
+          </div>
+
+          <div class="contact-panel fade-in">
+            <p class="contact-heading">Connect</p>
+
+            <a href="https://instagram.com/" class="contact-link" target="_blank" rel="noopener noreferrer">
+              <div class="contact-link-icon" aria-hidden="true">&#x2B50;</div>
+              <div class="contact-link-label">
+                <strong>Instagram</strong>
+                <span>Follow the work</span>
+              </div>
+            </a>
+
+            <a href="mailto:padavano.anthony@gmail.com" class="contact-link">
+              <div class="contact-link-icon" aria-hidden="true">@</div>
+              <div class="contact-link-label">
+                <strong>Email</strong>
+                <span>padavano.anthony@gmail.com</span>
+              </div>
+            </a>
+
+            <div style="margin-top: var(--space-m); padding-top: var(--space-m); border-top: 1px solid var(--border);">
+              <p style="font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); line-height: 1.8;">
+                Photography &middot; Film &middot; Multimedia<br>
+                Generative &amp; Glitch Art &middot; Sound &middot; Writing<br>
+                <span style="color: var(--accent);">Academic &amp; independent practice</span>
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ FOOTER ══════════════════════════════════════════════════ -->
+    <footer>
+      <div class="footer-inner">
+        <span class="footer-wordmark">ET CETER<span>4</span></span>
+        <span class="footer-copy">&copy; 2026 Anthony Padavano. All rights reserved.</span>
+      </div>
+    </footer>
+
+  </div><!-- /content-layer -->
+
+  <!-- ══ JAVASCRIPT ══════════════════════════════════════════════ -->
+  <script>
+  (function() {
+    'use strict';
+
+    // ── REDUCED MOTION DETECTION ──────────────────────────────────
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ── GENERATIVE CANVAS (flow-field particle system) ───────────
+    (function initCanvas() {
+      const canvas = document.getElementById('signal-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      let W, H, raf;
+
+      // Particle state
+      const PARTICLE_COUNT = prefersReduced ? 0 : 180;
+      const particles = [];
+
+      // Flow field
+      const COLS = 40;
+      const ROWS = 28;
+      let field = [];
+      let t = 0;
+
+      function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        buildField();
+      }
+
+      // Simple Perlin-ish noise via sin/cos combination
+      function noise(x, y, z) {
+        const X = Math.floor(x) & 255;
+        const Y = Math.floor(y) & 255;
+        const fX = x - Math.floor(x);
+        const fY = y - Math.floor(y);
+        // cheap approximation — good enough for a flow field
+        return (
+          Math.sin(X * 0.1 + z) *
+          Math.cos(Y * 0.1 + z * 0.7) +
+          Math.sin((X + Y) * 0.07 + z * 1.3) * 0.5
+        ) * 0.5 + 0.5;
+      }
+
+      function buildField() {
+        field = [];
+        for (let c = 0; c < COLS; c++) {
+          field[c] = [];
+          for (let r = 0; r < ROWS; r++) {
+            field[c][r] = 0; // angle, updated in tick
+          }
+        }
+      }
+
+      function updateField() {
+        const scale = 0.12;
+        for (let c = 0; c < COLS; c++) {
+          for (let r = 0; r < ROWS; r++) {
+            const n = noise(c * scale, r * scale, t * 0.0008);
+            field[c][r] = n * Math.PI * 4; // full two turns
+          }
+        }
+      }
+
+      function Particle() {
+        this.reset();
+      }
+
+      Particle.prototype.reset = function() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.vx = 0;
+        this.vy = 0;
+        this.life = Math.random() * 180 + 60;
+        this.age  = 0;
+        this.speed = Math.random() * 0.7 + 0.2;
+        // palette: mostly fg-3 gray with occasional accent green
+        this.accent = Math.random() < 0.12;
+      };
+
+      Particle.prototype.update = function() {
+        const col = Math.floor((this.x / W) * COLS);
+        const row = Math.floor((this.y / H) * ROWS);
+        const c = Math.max(0, Math.min(COLS - 1, col));
+        const r = Math.max(0, Math.min(ROWS - 1, row));
+        const angle = field[c][r];
+
+        this.vx += Math.cos(angle) * 0.08;
+        this.vy += Math.sin(angle) * 0.08;
+
+        // damping
+        this.vx *= 0.92;
+        this.vy *= 0.92;
+
+        this.x += this.vx * this.speed;
+        this.y += this.vy * this.speed;
+        this.age++;
+
+        if (this.age > this.life || this.x < 0 || this.x > W || this.y < 0 || this.y > H) {
+          this.reset();
+        }
+      };
+
+      Particle.prototype.draw = function() {
+        const alpha = Math.min(1, (this.life - this.age) / 40) * (this.accent ? 0.65 : 0.25);
+        const col = this.accent ? `rgba(200,245,66,${alpha})` : `rgba(152,152,168,${alpha})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.accent ? 1.2 : 0.8, 0, Math.PI * 2);
+        ctx.fillStyle = col;
+        ctx.fill();
+      };
+
+      // Horizontal scan-line streaks (oscilloscope feel)
+      function drawScanlines() {
+        const stripeCount = 6;
+        for (let i = 0; i < stripeCount; i++) {
+          const y = ((t * 0.3 + i * (H / stripeCount)) % H);
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(W, y);
+          ctx.strokeStyle = 'rgba(200,245,66,0.018)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+
+      // Faint grid lines
+      function drawGrid() {
+        ctx.strokeStyle = 'rgba(200,245,66,0.022)';
+        ctx.lineWidth = 0.5;
+        const stepX = W / COLS;
+        const stepY = H / ROWS;
+        for (let c = 0; c <= COLS; c++) {
+          ctx.beginPath();
+          ctx.moveTo(c * stepX, 0);
+          ctx.lineTo(c * stepX, H);
+          ctx.stroke();
+        }
+        for (let r = 0; r <= ROWS; r++) {
+          ctx.beginPath();
+          ctx.moveTo(0, r * stepY);
+          ctx.lineTo(W, r * stepY);
+          ctx.stroke();
+        }
+      }
+
+      function tick(timestamp) {
+        t = timestamp;
+        updateField();
+
+        // Fade trail — very dark clear
+        ctx.fillStyle = 'rgba(10,10,11,0.18)';
+        ctx.fillRect(0, 0, W, H);
+
+        drawGrid();
+        drawScanlines();
+
+        for (const p of particles) {
+          p.update();
+          p.draw();
+        }
+
+        raf = requestAnimationFrame(tick);
+      }
+
+      // Init
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push(new Particle());
+        // spread initial positions across the canvas
+        particles[i].x = Math.random() * window.innerWidth;
+        particles[i].y = Math.random() * window.innerHeight;
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+
+      if (!prefersReduced) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        canvas.style.display = 'none';
+      }
+
+      // Pause when tab hidden for perf
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+          cancelAnimationFrame(raf);
+        } else if (!prefersReduced) {
+          raf = requestAnimationFrame(tick);
+        }
+      });
+    })();
+
+    // ── NAVBAR SCROLL STATE ───────────────────────────────────────
+    (function initNav() {
+      const nav = document.getElementById('main-nav');
+      if (!nav) return;
+      function onScroll() {
+        nav.classList.toggle('scrolled', window.scrollY > 48);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    // ── GALLERY LIGHTBOX ──────────────────────────────────────────
+    (function initLightbox() {
+      const lb      = document.getElementById('lightbox');
+      const lbImg   = document.getElementById('lightbox-img');
+      const lbMeta  = document.getElementById('lightbox-meta');
+      const lbClose = document.getElementById('lightbox-close');
+      if (!lb || !lbImg) return;
+
+      function open(src, alt, cat) {
+        lbImg.src = src;
+        lbImg.alt = alt;
+        lbMeta.innerHTML = '<em>' + (cat || 'Work') + '</em>' + (alt || '');
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        lbClose.focus();
+      }
+
+      function close() {
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+      }
+
+      // Click gallery items
+      document.getElementById('gallery').addEventListener('click', function(e) {
+        const item = e.target.closest('.gallery-item');
+        if (!item) return;
+        const img = item.querySelector('img');
+        const cat = item.dataset.cat;
+        if (img) open(img.src, img.alt, cat);
+      });
+
+      // Keyboard for gallery items
+      document.getElementById('gallery').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const item = e.target.closest('.gallery-item');
+          if (!item) return;
+          e.preventDefault();
+          const img = item.querySelector('img');
+          if (img) open(img.src, img.alt, item.dataset.cat);
+        }
+      });
+
+      // Make gallery items keyboard-focusable
+      document.querySelectorAll('.gallery-item').forEach(function(item) {
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-label', 'View image: ' + (item.querySelector('img') ? item.querySelector('img').alt : ''));
+      });
+
+      lbClose.addEventListener('click', close);
+      lb.addEventListener('click', function(e) {
+        if (e.target === lb) close();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lb.classList.contains('open')) close();
+      });
+    })();
+
+    // ── GALLERY FILTER ────────────────────────────────────────────
+    (function initFilters() {
+      const btns = document.querySelectorAll('.filter-btn');
+      const items = document.querySelectorAll('.gallery-item');
+      if (!btns.length) return;
+
+      btns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const filter = btn.dataset.filter;
+
+          btns.forEach(function(b) {
+            b.classList.remove('active');
+            b.removeAttribute('aria-pressed');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-pressed', 'true');
+
+          items.forEach(function(item) {
+            const match = filter === 'all' || item.dataset.cat === filter;
+            item.style.display = match ? '' : 'none';
+          });
+        });
+      });
+    })();
+
+    // ── SCROLL FADE-IN (IntersectionObserver) ─────────────────────
+    (function initFadeIn() {
+      if (prefersReduced) return;
+      const els = document.querySelectorAll('.fade-in');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function(el) { el.classList.add('visible'); });
+        return;
+      }
+      const obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+      els.forEach(function(el) { obs.observe(el); });
+    })();
+
+  })();
+  </script>
+
+</body>
+</html>
