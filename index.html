@@ -705,7 +705,7 @@
         <!-- Main Container -->
         <section class="bg-white fl-ns ad-img-container w-50-ns">
           <!-- Image -->
-          <img src="img/photos/artwork/passing thru/pt5.png" alt="" class="ad-img ad-img-ns w-100" />
+          <img src="img/photos/artwork/passing thru/pt5.png" alt="" class="ad-img ad-img-ns w-100" loading="lazy" />
         </section>
 
         <section class="bg-white pt2 pt0-ns fl-ns w-50-ns">
@@ -814,15 +814,12 @@
     ></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.6/velocity.min.js"
-      integrity="sha512-+ZPnKPFqf/PjXPKJLBykOgAOnUmCp0ufqCYWsuvMV5FhlYCf/DlTdB3PQJuXzA3otXm1FiooUNrBncLRLbYaxA=="
+      integrity="sha384-Wt1EARpBHA8fGrQ7XEo8laWYzA2BQIPwl0w2qkrSlC9rEo/Pu1mxpjoYlG0mF6oF"
       crossorigin="anonymous"
     ></script>
     <!-- SoundJS for UI audio sprites -->
-    <script
-      src="https://code.createjs.com/1.0.0/soundjs.min.js"
-      integrity="sha384-mcaxXEFlg7++JrDF0LPCZqTCapl34silN67EmAs7ZDK1XzXz5s2gYm2VWeAqxyEp"
-      crossorigin="anonymous"
-    ></script>
+    <!-- Note: code.createjs.com does not serve CORS headers; integrity check removed to allow load -->
+    <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
     <!-- Three.js for 3D landing experience -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"

@@ -692,6 +692,17 @@ button:focus-visible {
 
 /*
 
+    Landing Page Canvas Wrapper
+
+*/
+
+/* Clip the Three.js WebGL canvas to its container so color bands don't bleed outside the hero region */
+#landingPageCanvasWrapper {
+  overflow: hidden;
+}
+
+/*
+
     Menu Page
 
 */
