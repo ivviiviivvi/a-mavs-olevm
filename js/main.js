@@ -85,7 +85,7 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Register main PWA service worker
     navigator.serviceWorker
-      .register('/sw.js')
+      .register('./sw.js')
       .then(registration => {
         console.log('SW registered:', registration.scope);
         // Check for updates periodically
@@ -101,7 +101,7 @@ if ('serviceWorker' in navigator) {
 
     // Register MediaServiceWorker for offline media caching
     navigator.serviceWorker
-      .register('/js/media/cache/MediaServiceWorker.js')
+      .register('./js/media/cache/MediaServiceWorker.js')
       .then(registration => {
         console.log('MediaServiceWorker registered:', registration.scope);
         // Check for updates periodically

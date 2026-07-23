@@ -13,23 +13,27 @@ const CACHE_NAME = `etceter4-v${CACHE_VERSION}`;
  * Critical assets to cache
  * Limited to essential CSS, JS, and favicon
  */
+// Use relative URLs so the service worker works both at the site root
+// (e.g. etceter4.com/) and under a GitHub Pages subpath (e.g. /a-mavs-olevm/).
+// self.location.pathname gives the sw.js path; strip the filename to get the base.
+const _swBase = self.location.pathname.replace(/\/sw\.js$/, '') || '';
 const CRITICAL_ASSETS = [
-  '/',
-  '/index.html',
-  '/offline.html',
-  '/css/styles.css',
-  '/css/vendor/tachyons/css/tachyons.min.css',
-  '/js/config.js',
-  '/js/modules/ScriptLoader.js',
-  '/js/modules/ChamberLoader.js',
-  '/js/modules/JourneyTracker.js',
-  '/js/modules/JourneyNarrative.js',
-  '/js/chamberManifest.js',
-  '/js/main.js',
-  '/js/page.js',
-  '/js/pageData.js',
-  '/img/favicon.ico',
-  '/img/placeholder.jpg',
+  _swBase + '/',
+  _swBase + '/index.html',
+  _swBase + '/offline.html',
+  _swBase + '/css/styles.css',
+  _swBase + '/css/vendor/tachyons/css/tachyons.min.css',
+  _swBase + '/js/config.js',
+  _swBase + '/js/modules/ScriptLoader.js',
+  _swBase + '/js/modules/ChamberLoader.js',
+  _swBase + '/js/modules/JourneyTracker.js',
+  _swBase + '/js/modules/JourneyNarrative.js',
+  _swBase + '/js/chamberManifest.js',
+  _swBase + '/js/main.js',
+  _swBase + '/js/page.js',
+  _swBase + '/js/pageData.js',
+  _swBase + '/img/favicon.ico',
+  _swBase + '/img/placeholder.jpg',
 ];
 
 /**
@@ -138,7 +142,7 @@ self.addEventListener('fetch', event => {
           }
           // For navigation requests, serve the offline page
           if (event.request.mode === 'navigate') {
-            return caches.match('/offline.html');
+            return caches.match(_swBase + '/offline.html');
           }
           return cachedResponse;
         });

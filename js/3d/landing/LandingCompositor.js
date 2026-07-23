@@ -276,7 +276,6 @@ class LandingCompositor {
       },
       vertexShader: `
         attribute float size;
-        attribute vec3 velocity;
 
         uniform float uTime;
         uniform float uPixelRatio;
