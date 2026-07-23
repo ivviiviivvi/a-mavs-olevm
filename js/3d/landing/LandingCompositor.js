@@ -365,6 +365,11 @@ class LandingCompositor {
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     const material = new THREE.ShaderMaterial({
+      // vertexColors makes Three.js declare `attribute vec3 color;` in the shader
+      // prelude. Without it, a raw ShaderMaterial does NOT auto-declare `color`,
+      // so referencing it below is an undeclared identifier and the vertex shader
+      // fails to compile (VALIDATE_STATUS false).
+      vertexColors: true,
       uniforms: {
         uTime: { value: 0 },
         uOpacity: { value: this.config.layers.menuMask.opacity * 0.3 },
@@ -376,7 +381,7 @@ class LandingCompositor {
         varying float vAlpha;
 
         void main() {
-          vColor = color;  // 'color' injected by Three.js from buffer attribute
+          vColor = color;  // 'color' declared by Three.js because vertexColors: true
 
           vec3 pos = position;
           pos.y += sin(uTime * 0.5 + position.x * 0.1) * 1.0;
